@@ -1,3 +1,7 @@
+# 0.0.0.9 2019-05-07 14:08 ( 5Kf6 )
+
+- Added minimal benchmarking.
+
 # 0.0.0.9 2019-05-07 13:31 ( 5Kf6 )
 
 - Catch failure of socket and reset for `Launcher` and `Mount` per #9
