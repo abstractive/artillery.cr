@@ -1,14 +1,19 @@
+# 0.0.0.6 2019-05-07 02:49 ( 4Jf5 )
+
+- Add skeletons for `Shell` objects: `Request` and `Response`
+- Flesh-out shard with executable placeholder, and targets
+
 # 0.0.0.5 2019-05-07 02:35 ( 4Jf5 )
 
-- Add `msgpack` as dependency.
-- Add `Logger` to all top-level classes.
+- Add `msgpack` as dependency
+- Add `Logger` to all top-level classes
 - Remove `artillery/version.cr` and favor `shard.yml`
 
 # 0.0.0.4 2019-05-07 02:25 ( 4Jf5 )
 
-- Anticipate `nginx` setup process.
-- Add failing tests for `Mount`, `Launcher`, and `Projectile`.
-- Add `Logger` module skeleton.
+- Anticipate `nginx` setup process
+- Add failing tests for `Mount`, `Launcher`, and `Projectile`
+- Add `Logger` module skeleton
 
 # 0.0.0.3 2019-05-07 00:47 ( 4Jf5 )
 

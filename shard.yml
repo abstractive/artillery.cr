@@ -1,5 +1,5 @@
 name: artillery
-version: 0.0.0.5
+version: 0.0.0.6
 
 description: Serverfree object-oriented microservice architecture.
 
@@ -7,6 +7,17 @@ authors:
   - digitalextremist <code@extremist.digital>
 
 crystal: 0.28.0
+
+executables:
+  - art
+
+targets:
+  mount:
+    main: src/artillery/mount.cr
+  launcher:
+    main: src/artillery/launcher.cr
+  projectile:
+    main: src/artillery/projectile.cr
 
 license: MIT
 
