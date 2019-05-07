@@ -1,0 +1,6 @@
+name: artillery-examples
+version: 0.0.0.1
+
+dependencies:
+  zeromq:
+    github: crystal-community/zeromq-crystal

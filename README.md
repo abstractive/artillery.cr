@@ -1,4 +1,4 @@
-# artillery
+# artillery.cr
 
 [![GitHub release](https://img.shields.io/github/release/abstractive/artillery.cr.svg)](https://github.com/abstractive/artillery.cr/releases)
 

@@ -1,5 +1,5 @@
 name: artillery
-version: 0.0.0.1
+version: 0.0.0.2
 
 description: Serverfree object-oriented microservice architecture.
 
@@ -11,3 +11,7 @@ crystal: 0.28.0
 license: MIT
 
 github: abstractive/artillery.cr
+
+dependencies:
+  zeromq:
+    github: crystal-community/zeromq-crystal
