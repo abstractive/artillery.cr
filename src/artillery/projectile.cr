@@ -1,3 +1,5 @@
+require "../artillery"
+
 module Artillery
   class Projectile
 

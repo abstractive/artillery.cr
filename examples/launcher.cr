@@ -1,4 +1,4 @@
-require "zeromq"
+require "../src/artillery"
 
 context = ZMQ::Context.new
 client = context.socket(ZMQ::REQ)

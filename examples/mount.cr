@@ -1,5 +1,4 @@
-require "zeromq"
-require "kemal"
+require "../src/artillery/mount"
 
 context = ZMQ::Context.new
 server = context.socket(ZMQ::REP)

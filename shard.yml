@@ -1,5 +1,5 @@
 name: artillery
-version: 0.0.0.4
+version: 0.0.0.5
 
 description: Serverfree object-oriented microservice architecture.
 
@@ -17,3 +17,5 @@ dependencies:
     github: crystal-community/zeromq-crystal
   kemal:
     github: kemalcr/kemal
+  msgpack:
+    github: crystal-community/msgpack-crystal
