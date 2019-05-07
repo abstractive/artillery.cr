@@ -1,6 +1,4 @@
-require "../src/artillery"
-require "../src/artillery/mount"
-require "../src/artillery/launcher"
+require "http/client"
 
 total_requests = 10_000
 
@@ -15,7 +13,6 @@ total_requests.times {
   i += 1
   Fiber.yield
 }
-
 
 seconds = (Time.now - start).total_seconds
 puts "Messages per second: #{(i * 2) / seconds.to_f}"
