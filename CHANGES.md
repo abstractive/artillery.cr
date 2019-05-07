@@ -1,3 +1,9 @@
+# 0.0.0.5 2019-05-07 02:35 ( 4Jf5 )
+
+- Add `msgpack` as dependency.
+- Add `Logger` to all top-level classes.
+- Remove `artillery/version.cr` and favor `shard.yml`
+
 # 0.0.0.4 2019-05-07 02:25 ( 4Jf5 )
 
 - Anticipate `nginx` setup process.
