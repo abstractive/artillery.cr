@@ -1,3 +1,9 @@
+# 0.0.0.4 2019-05-07 02:25 ( 4Jf5 )
+
+- Anticipate `nginx` setup process.
+- Add failing tests for `Mount`, `Launcher`, and `Projectile`.
+- Add `Logger` module skeleton.
+
 # 0.0.0.3 2019-05-07 00:47 ( 4Jf5 )
 
 - Routing of HTTP from `mount` through 0MQ to `launchers`
