@@ -1,0 +1,13 @@
+name: artillery
+version: 0.0.0.1
+
+description: Serverfree object-oriented microservice architecture.
+
+authors:
+  - digitalextremist <code@extremist.digital>
+
+crystal: 0.28.0
+
+license: MIT
+
+github: abstractive/artillery
