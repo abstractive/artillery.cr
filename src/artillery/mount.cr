@@ -31,7 +31,7 @@ module Artillery
       {% for method in HTTP_METHODS %}
         Kemal::RouteHandler::INSTANCE.add_route({{method.upcase}}, "/*") do |env|
           begin
-            log env.inspect
+            #de log env.inspect
             log "#{timestamp}/m1: #{env.request.path} "
             @@server.send_string(Artillery::Shell::Request.as_json_from_context(env))
             @@server.receive_string

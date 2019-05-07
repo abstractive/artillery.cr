@@ -27,17 +27,16 @@ module Artillery
       end
 
       def self.as_json_from_context(env)
-        payload = {
+        {
           method: (env.request.method || "").to_s,
           path: (env.request.path || "").to_s,
           body: (env.request.body || IO::Memory.new).to_s,
           query: (env.request.query || "").to_s
-        }        
+        }.to_json
         #de payload[:index] = "#{payload[:method].downcase}|#{payload[:path]}"
         #de {% if Artillery::ARTILLERY_SHELL_HEADERS %}
         #de   payload[:headers] = env.request.headers
         #de {% end %}
-        payload.to_json
       end
 
     end
