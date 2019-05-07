@@ -15,3 +15,5 @@ github: abstractive/artillery.cr
 dependencies:
   zeromq:
     github: crystal-community/zeromq-crystal
+  kemal:
+    github: kemalcr/kemal
