@@ -13,6 +13,10 @@
 - Add `msgpack` as dependency
 - Add `Logger` to all top-level classes
 - Remove `artillery/version.cr` and favor `shard.yml`
+# 0.0.0.7 2019-05-07 11:24 ( 5Kf6 )
+
+- Put in, wrestled with, and then ripped out msgpack.
+- Tidied up, no tests at this early stage though as I figure out what even works.
 
 # 0.0.0.4 2019-05-07 02:25 ( 4Jf5 )
 

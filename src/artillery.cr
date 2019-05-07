@@ -1,8 +1,13 @@
 require "zeromq"
-require "msgpack"
+require "json"
 
-module Artillery; end
+module Artillery
+  ARTILLERY_SHELL_HEADERS = ENV["ARTILLERY_SHELL_HEADERS"] ||= nil
+end
+
 require "./artillery/logger"
+require "./artillery/shell/request"
+require "./artillery/shell/response"
 
 require "./artillery/mount"
 require "./artillery/launcher"

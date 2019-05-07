@@ -20,5 +20,3 @@ dependencies:
     github: crystal-community/zeromq-crystal
   kemal:
     github: kemalcr/kemal
-  msgpack:
-    github: crystal-community/msgpack-crystal
