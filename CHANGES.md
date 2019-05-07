@@ -1,3 +1,8 @@
+# 0.0.0.7 2019-05-07 03:05 ( 4Jf5 )
+
+- Remove targets again for now.
+
+
 # 0.0.0.6 2019-05-07 02:49 ( 4Jf5 )
 
 - Add skeletons for `Shell` objects: `Request` and `Response`
