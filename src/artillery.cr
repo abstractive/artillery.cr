@@ -1,3 +1,5 @@
-module Artillery
+module Artillery; end
 
-end
+require "./artillery/mount"
+require "./artillery/launcher"
+require "./artillery/projectile"

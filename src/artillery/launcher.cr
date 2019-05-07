@@ -1,5 +1,5 @@
 module Artillery
-  class Projectile
+  class Launcher
 
   end
 end
