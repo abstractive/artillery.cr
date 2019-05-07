@@ -1,18 +1,10 @@
-# 0.0.0.7 2019-05-07 03:05 ( 4Jf5 )
+# 0.0.0.9 2019-05-07 13:31 ( 5Kf6 )
 
-- Remove targets again for now.
+- Catch failure of socket and reset for `Launcher` and `Mount` per #9
+- Refactor `Projectile` toward storing routes differently in `Launcher`
+- Beginning of `Projectile.vectors` leading to radix tree next
+- Logger extends self
 
-
-# 0.0.0.6 2019-05-07 02:49 ( 4Jf5 )
-
-- Add skeletons for `Shell` objects: `Request` and `Response`
-- Flesh-out shard with executable placeholder, and targets
-
-# 0.0.0.5 2019-05-07 02:35 ( 4Jf5 )
-
-- Add `msgpack` as dependency
-- Add `Logger` to all top-level classes
-- Remove `artillery/version.cr` and favor `shard.yml`
 # 0.0.0.7 2019-05-07 11:24 ( 5Kf6 )
 
 - Put in, wrestled with, and then ripped out msgpack.
