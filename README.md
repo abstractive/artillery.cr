@@ -31,8 +31,9 @@ All information about this exists in the [Issues](https://github.com/abstractive
 require "artillery"
 ```
 
+
 ---
 
-Currently and foreseeably MIT licensed, because if you want the code without the people, good riddance anyway. Do what you're going to do, and if you've got too much going on to contribute, you're probably making a contribution to the world some other way.
+Currently and foreseeably MIT licensed, because if you want code without people, good riddance anyway. Do what you're going to do, and if you've got too much going on to contribute, you're probably making a contribution to the world some other way. But don't be a stranger.
 
-Developed by [digitalextremist //](https://github.com/digitalextremist) in partnership with [abstractive labs](https://github.com/abstractive), and facilitated by [delimiter chambers](http://github.com/delimiterchambers).
+**Developed by [digitalextremist //](https://github.com/digitalextremist)** in partnership with [abstractive labs](https://github.com/abstractive), facilitated by [delimiter chambers](http://github.com/delimiterchambers).
