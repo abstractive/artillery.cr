@@ -9,8 +9,6 @@ module Artillery
     @@context = uninitialized ZMQ::Context
     @@server = uninitialized ZMQ::Socket
 
-    HTTP_METHODS   = %w(get post put patch delete options)
-
     def self.start
       @@context = ZMQ::Context.new
       @@server = @@context.socket(ZMQ::REQ)
@@ -31,10 +29,10 @@ module Artillery
       {% for method in HTTP_METHODS %}
         Kemal::RouteHandler::INSTANCE.add_route({{method.upcase}}, "/*") do |env|
           begin
-            #de log env.inspect
-            #de log "#{timestamp}/m1: #{env.request.path} "
             @@server.send_string(Artillery::Shell::Request.as_json_from_context(env))
-            @@server.receive_string #de Directly output to socket.
+            response = JSON.parse(@@server.receive_string) #de Directly output to socket.
+            env.response.status_code = Int32.new("#{response["status"]}")
+            "#{response["body"]}"
           rescue ex
             log "#{ex.class.name}: #{ex.message}\n#{ex.backtrace.join('\n')}"
             reset

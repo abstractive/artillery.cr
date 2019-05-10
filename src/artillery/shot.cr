@@ -1,48 +1,90 @@
 require "../artillery"
 
 module Artillery
-  class Shot
+  abstract class Shot
+
+    property request : Artillery::Shell::Request
+    property response : Artillery::Shell::Response
+
+    @@attached = [] of String
+
+    macro inherited
+      #de puts "INHERETED: #{self}"
+      #de Must have vectors
+      Artillery::Launcher.attach "#{self}"
+    end
+
+    def self.attached
+      @@attached
+    end
 
     include Logger
 
-    #de TODO: Infer uri by file-location unless specified
-    @@vectors = Array(NamedTuple(uri: String, method: Symbol, action: Symbol)).new
-
-    @response = uninitialized Shell::Response
-    @request = uninitialized Shell::Request
-
-    property request : Shell::Request?
-
-    def initialize(request)
-      log "Initialize"
+    def initialize(request : Shell::Request)
+      log "REQUEST: #{request.path}"
       @request = request
+      @response = Shell::Response.new
     end
 
-    def self.vector(uri : String)
-      @@vectors.push({
-        uri: uri,
+    def get
+      error 404, "Not Found"
+    end
+
+    def put
+      error 404, "Not Found"
+    end
+
+    def post
+      error 404, "Not Found"
+    end
+
+    def delete
+      error 404, "Not Found"
+    end
+
+
+    def header(
+        key : String,
+        value : String
+      )
+      @response.add(key, value)
+    end
+
+    def success(body : String?)
+      @response.status = 200
+      @response.body = body unless body.nil?
+    end
+  
+    def error(
+        code : Int16,
+        body : String?
+      )
+      @response.status = code
+      @response.body = body unless body.nil?
+    end
+
+    def self.vector(path : String)
+      Artillery::Launcher.load({
         method: :get,
-        action: :initialize
+        path: path,
+        object: "#{self}"
       })
     end
 
-    def self.vector(method : Symbol, uri : String)
-      @@vectors.push({
+    def self.vector(method : Symbol, path : String)
+      Artillery::Launcher.load({
         method: method,
-        uri: uri
+        path: path,
+        object: "#{self}"
       })
     end
 
-    def self.vector(method : Symbol, uri : String, action : Symbol)
-      @@vectors.push({
+    def self.vector(method : Symbol, path : String, execute : Symbol)
+      Artillery::Launcher.load({
         method: method,
-        uri: uri,
-        action: action
+        path: path,
+        object: "#{self}"
       })
-    end
-
-    def self.vectors
-      @@vectors
     end
 
   end

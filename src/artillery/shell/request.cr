@@ -15,7 +15,7 @@ module Artillery
         @path = (env["path"] || "").to_s
         @body = (env["body"] || IO::Memory.new).to_s
         @query = (env["query"] || "").to_s
-        @index = "#{@method.downcase}|#{@path}"
+        @index = "#{@method}#{@path}"
         #de {% if Artillery::ARTILLERY_SHELL_HEADERS %}
         #de   @headers = env["headers"]
         #de {% end %}
@@ -33,7 +33,6 @@ module Artillery
           body: (env.request.body || IO::Memory.new).to_s,
           query: (env.request.query || "").to_s
         }.to_json
-        #de payload[:index] = "#{payload[:method].downcase}|#{payload[:path]}"
         #de {% if Artillery::ARTILLERY_SHELL_HEADERS %}
         #de   payload[:headers] = env.request.headers
         #de {% end %}
