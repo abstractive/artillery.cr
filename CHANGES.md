@@ -1,3 +1,7 @@
+# 0.0.0.24 2019-05-10 09:08 ( 8Nf9 )
+
+- Fix permissions of bin/ commands
+
 # 0.0.0.23 2019-05-10 09:06 ( 8Nf9 )
 
 - Previous issue was that `Crystal` needs shards tagged with "v" prepended to version
