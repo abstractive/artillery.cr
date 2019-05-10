@@ -1,3 +1,7 @@
+# 0.0.0.30 2019-05-10 12:35 ( 8Nf9 )
+
+- Fix path in require statement
+
 # 0.0.0.29 2019-05-10 12:31 ( 8Nf9 )
 
 - Still chasing phantom object showing up but cannot possibly exist. The HelloWorld apocalypse

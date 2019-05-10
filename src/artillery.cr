@@ -18,5 +18,5 @@ require "./artillery/shell/request"
 require "./artillery/shell/response"
 
 require "./artillery/mountpoint"
-require "./artillery/launchpoint"
+require "./artillery/launcher"
 require "./artillery/shot"
