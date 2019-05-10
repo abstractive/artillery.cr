@@ -22,6 +22,6 @@ require "./artillery/mountpoint"
 require "./artillery/launcher"
 require "./artillery/shot"
 
-if Artillery::USE_SHOTS
-  puts "SHOTS: #{Artillery::USE_SHOTS}"
-end
+#de if Artillery::USE_SHOTS
+#de   puts "SHOTS: #{Artillery::USE_SHOTS}"
+#de end

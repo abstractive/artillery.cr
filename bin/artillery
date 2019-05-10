@@ -1,28 +1,33 @@
 #!/bin/bash
 
-PROJECTILE="`pwd`"
-export ARTILLERY_PUBLIC=$PROJECTILE/public
-export ARTILLERY_SHOTS=$PROJECTILE/shots
-
-function timestamp { echo `date '+%Y-%m-%d %H:%M:%S.%3N'` }
-function log { echo "$(timestamp) > $1" }
+function timestamp { echo `date '+%Y-%m-%d %H:%M:%S.%3N'`; }
+function log { echo "$(timestamp) > $1"; }
 function join { local IFS=$'\n'; echo "$*"; }
 
-function hasArgument {
+function hasArgument () {
   local e match="$1"
   shift
   for e; do [[ "$e" == "$match" ]] && return 1; done
   return 0
 }
 
-hasArgument "--bazooka" $@
-BAZOOKA=$?
+hasArgument "--bazooka" $@;  BAZOOKA=$?
+hasArgument "--update" $@;   UPDATE=$?
+hasArgument "--debug" $@;    DEBUG=$?
 
-hasArgument "--update" $@
-UPDATE=$?
+PROJECTILE="`pwd`"
+export ARTILLERY_PUBLIC=$PROJECTILE/public
+export ARTILLERY_SHOTS=$PROJECTILE/shots
+working_directory=$PROJECTILE
 
-hasArgument "--debug" $@
-DEBUG=$?
+cd "$(dirname "$0")/../"
+
+if [[ $DEBUG -eq 1 ]]; then
+  log "Directories: $PROJECTILE"
+  log "LOADING Directory: `pwd`"
+fi
+
+offset_directory=${ARTILLERY_SHOTS#"$(pwd)"}
 
 required_files=""
 REQUIRED=()
@@ -30,15 +35,21 @@ REQUIRED=()
 if [ -d $ARTILLERY_SHOTS ]; then
   for line in $(find $ARTILLERY_SHOTS -name "*.cr"); do
     cleaned=${line#"$PROJECTILE"}
+    merged="$offset_directory$cleaned"
+    cleaned="${merged/shots\/shots/shots}"
     REQUIRED+=("require=\".$cleaned\";")
   done
   required_files=$(join ${REQUIRED[@]})
   required_files=`echo -n $required_files | sed -r 's/[=]+/ /g' | sed -r 's/[;]+/\\n/g'`
 fi
 
-cd "$(dirname "$0")/../"
+ARTILLERY_BASE="\"artillery\""
+if [[ -d "$(pwd)/src/artillery" ]]; then
+  ARTILLERY_BASE="\"./src/artillery.cr\""
+fi
+
 if [[ $DEBUG -eq 1 ]]; then
-  log "Working directory: `pwd`"
+  log "Artillery Base: $ARTILLERY_BASE"
   export ARTILLERY_LOG_LEVEL='debug'
 fi
 
@@ -47,15 +58,14 @@ if [[ $UPDATE -eq 1 ]]; then
 fi
 
 if [[ $BAZOOKA -eq 1 ]]; then
-
   log "Bazooka > Starting Artillery::Mountpoint ..."
-  crystal eval "require \"artillery\"; Artillery::Mountpoint.run" &
+  crystal eval "require $ARTILLERY_BASE; Artillery::Mountpoint.run" &
   MOUNTPOINT="$!"
 
   log "Bazooka > Waiting 4 seconds for Mountpoint to settle"
   sleep 4
 
-  PROGRAM="require \"artillery\";
+  PROGRAM="require $ARTILLERY_BASE;
   $required_files;
   Artillery::Launcher.run"
 
