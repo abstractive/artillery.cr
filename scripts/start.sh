@@ -1,5 +1,5 @@
 #!/bin/bash
 
 docker-compose up -d
-./scale.sh
-./console.sh
+./scripts/scale.sh
+./scripts/console.sh

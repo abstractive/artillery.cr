@@ -1,4 +1,4 @@
 #!/bin/bash
 
 export LOG_LEVEL='debug'
-./start.sh
+./scripts/start.sh
