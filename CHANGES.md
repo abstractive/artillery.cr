@@ -1,3 +1,8 @@
+# 0.0.0.29 2019-05-10 12:31 ( 8Nf9 )
+
+- Still chasing phantom object showing up but cannot possibly exist. The HelloWorld apocalypse
+- Trim out artillery/bazooka.cr and include all elements in artillery.cr; bazooka becomes only an argument
+
 # 0.0.0.28 2019-05-10 11:52 ( 8Nf9 )
 
 - Fighting with wierd issue where Shots are persisting for no apparent reason.
