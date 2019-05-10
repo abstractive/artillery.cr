@@ -25,7 +25,7 @@ ADD . /artillery
 WORKDIR /artillery
 
 RUN shards install
-RUN crystal build --release /artillery/src/run/artillery-launcher.cr -o /artillery/bin/artillery-launcher
+RUN crystal build --release /artillery/src/processes/artillery-launcher.cr -o /artillery/bin/artillery-launcher
 
 CMD [ "/artillery/bin/artillery-launcher" ]
 

@@ -20,8 +20,8 @@ services:
       - target: 3000
         published: 3000
         mode: host
-      - target: 5000
-        published: 5000
+      - target: 5555
+        published: 5555
         mode: host
 
   launcher:
