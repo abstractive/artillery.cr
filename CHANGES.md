@@ -1,3 +1,9 @@
+# 0.0.0.20 2019-05-10 02:52 ( 7Mf8 )
+
+- Massive dive into Crystal internals and returned alive
+- Completed #19 and #20, essentially making this usable to start writing programs with
+- Closes #10 by searching with Radix::Tree for what Shot to call
+
 # 0.0.0.15 2019-05-09 20:00 ( 7Mf8 )
 
 - Refactor Projectile to Shot per #14
