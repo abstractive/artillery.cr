@@ -1,3 +1,7 @@
+# 0.0.0.26 2019-05-10 09:32 ( 8Nf9 )
+
+- Restructure examples/demo as example of `bazooka` invokation
+
 # 0.0.0.25 2019-05-10 09:18 ( 8Nf9 )
 
 - Provide src/artillery/bazooka and bin/bazooka

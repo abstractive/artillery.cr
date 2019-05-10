@@ -1,0 +1,6 @@
+name: artillery-demo
+version: 0.0.0.9
+
+dependencies:
+  artillery:
+    github: abstractive/artillery.cr
