@@ -4,16 +4,11 @@ PROJECTILE="`pwd`"
 export ARTILLERY_PUBLIC=$PROJECTILE/public
 export ARTILLERY_SHOTS=$PROJECTILE/shots
 
-function timestamp {
-  echo `date '+%Y-%m-%d %H:%M:%S.%3N'`
-}
-
-function log {
-  echo "$(timestamp) > $1"
-}
-
+function timestamp { echo `date '+%Y-%m-%d %H:%M:%S.%3N'` }
+function log { echo "$(timestamp) > $1" }
 function join { local IFS=$'\n'; echo "$*"; }
-function hasArgument () {
+
+function hasArgument {
   local e match="$1"
   shift
   for e; do [[ "$e" == "$match" ]] && return 1; done
