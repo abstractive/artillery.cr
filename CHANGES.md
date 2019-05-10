@@ -1,6 +1,10 @@
 # 0.0.0.15 2019-05-09 20:00 ( 7Mf8 )
 
 - Refactor Projectile to Shot per #14
+- Rename src/run/ to src/processes/
+- Attempt to fix #18 with discovery of port issue, but likely not a fix
+- Yeah, it didn't work
+- Added scripts/remake.sh to build bin/ processes
 
 # 0.0.0.14 2019-05-09 19:30 ( 7Mf8 )
 
