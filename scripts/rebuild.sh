@@ -1,9 +1,9 @@
 #!/bin/bash
-SERVICE_NAME=$1
+CONTAINER=$1
 
-if [[ -n $SERVICE_NAME ]]; then
-  echo "Rebuilding $SERVICE_NAME"
-  docker-compose up -d --build $SERVICE_NAME
+if [[ -n $CONTAINER ]]; then
+  echo "Rebuilding $CONTAINER"
+  docker-compose up -d --build $CONTAINER
 else
   echo "Rebuilding..."
   docker-compose up -d --build mountpoint

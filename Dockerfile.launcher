@@ -3,7 +3,7 @@ FROM crystallang/crystal:0.28.0
 ENV ZMQ_VERSION 4.1.4
 
 RUN apt-get update && apt-get install -y --fix-missing \
-    curl wget apt-tools \
+    curl wget \
     libtool libtool-bin \
     lxc pkg-config \
     build-essential \
