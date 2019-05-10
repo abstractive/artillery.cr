@@ -1,4 +1,4 @@
 #!/bin/bash
 
-export LOG_LEVEL='debug'
+export ARTILLERY_LOG_LEVEL='debug'
 ./scripts/start.sh

@@ -10,7 +10,7 @@ services:
       dockerfile: Dockerfile.mountpoint
     image: artillery-mountpoint:latest
     volumes:
-      - ./src:/src
+      - ./:/artillery
       - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
     environment:
       ENVIRONMENT: development
@@ -20,21 +20,14 @@ services:
       - target: 3000
         published: 3000
         mode: host
+      - target: 5000
+        published: 5000
+        mode: host
 
   launcher:
     restart: unless-stopped
     volumes:
-      - ./src:/src
-      - type: tmpfs
-        target: /tmp
-        tmpfs:
-          size: 5242880
-          mode: 0733
-      - type: tmpfs
-        target: /system/tmp
-        tmpfs:
-          size: 5242880
-          mode: 0700
+      - ./:/artillery
     build:
       context: .
       dockerfile: Dockerfile.launcher

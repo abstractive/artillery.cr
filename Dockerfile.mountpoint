@@ -3,12 +3,12 @@ FROM crystallang/crystal:0.28.0
 ENV ZMQ_VERSION 4.1.4
 
 RUN apt-get update && apt-get install -y --fix-missing \
-    curl wget \
-    libtool libtool-bin \
+    build-essential apt-utils libtool libtool-bin autoconf automake
+
+RUN apt-get install -y --fix-missing \
+    curl wget crystal \
     lxc pkg-config \
-    build-essential \
-    autoconf \
-    automake \
+    libzmq-dev \
     && mkdir -p /tmp/zeromq \
     && curl -SL http://download.zeromq.org/zeromq-$ZMQ_VERSION.tar.gz | tar zxC /tmp/zeromq \
     && cd /tmp/zeromq/zeromq-$ZMQ_VERSION/ \
@@ -16,53 +16,18 @@ RUN apt-get update && apt-get install -y --fix-missing \
     && make \
     && make install \
     && ldconfig \
-    && rm -rf /tmp/zeromq \
-    #de && apt-get purge -y \
-    curl \
-    libtool \
-    pkg-config \
-    build-essential \
-    autoconf \
-    automake #de \
-         && apt-key adv –keyserver keys.gnupg.net –recv-keys 09617FD37CC06B54 \
-         && add-apt-repository ‚deb https://dist.crystal-lang.org/apt crystal main‘ \
-         && apt-get update \
-         && apt-get install -y crystal \
-    && apt-get clean && apt-get autoclean && apt-get -y autoremove
+    && rm -rf /tmp/zeromq
+
+RUN apt-get clean && apt-get autoclean && apt-get -y autoremove
+
+EXPOSE 3000
+EXPOSE 5000
 
 ENV LOG_LEVEL ${ARTILLERY_LOG_LEVEL}
-ADD . /src
-WORKDIR /src
-#de RUN shards install
-RUN shards build --production
-RUN ldd bin/artillery-mountpoint | tr -s '[:blank:]' '\n' | grep '^/' | \
-    xargs -I % sh -c 'mkdir -p $(dirname deps%); cp % deps%;'
+ADD . /artillery
+WORKDIR /artillery
 
-FROM crystallang/crystal:0.28.0
-ENV WORKDIR /artillery
-RUN mkdir /$WORKDIR
-WORKDIR /$WORKDIR
+RUN shards install
+RUN crystal build --release /artillery/src/run/artillery-mountpoint.cr -o /artillery/bin/artillery-mountpoint
 
-RUN mkdir /system
-
-RUN mkdir -p /var/run/secrets /system/tmp &&\
-    chmod 700 /var/run/secrets &&\
-    chmod -R 700 /bin &&\
-    chmod -R 701 /system &&\
-    chmod -R 700 /sbin &&\
-    chmod -R 700 /usr/bin &&\
-    chmod -R 700 /usr/local/bin &&\
-    chmod -R 700 /var/run/secrets &&\
-    chmod 600 /etc/passwd &&\
-    chmod 600 /etc/group &&\
-    chmod 700 /var &&\
-    chmod 700 /usr/share &&\
-    chmod 700 /run &&\
-    chmod -R 700 /artillery &&\
-    chmod -R 733 /tmp &&\
-    chmod +t /tmp &&\
-    ls -1 /usr/local | grep -v bundle | while read line;do chown -R root /usr/local/$line; done
-
-COPY --from=0 /src/bin/artillery-mountpoint /system/artillery
-RUN chmod 0100 /system/artillery
-CMD ["capsh", "--drop=all", "--", "-c", "/system/artillery"]
+CMD [ "/artillery/bin/artillery-mountpoint" ]

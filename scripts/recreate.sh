@@ -7,4 +7,4 @@ else
   docker-compose up --force-recreate -d
   ./scripts/scale.sh
 fi
-./console.sh
+./scripts/console.sh
