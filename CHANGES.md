@@ -1,3 +1,7 @@
+# 0.0.0.15 2019-05-09 20:00 ( 7Mf8 )
+
+- Refactor Projectile to Shot per #14
+
 # 0.0.0.14 2019-05-09 19:30 ( 7Mf8 )
 
 - Giving up on #18 for now
