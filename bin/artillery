@@ -8,7 +8,7 @@ require_shots=""
 if [ -d $ARTILLERY_SHOTS ]
 then
   ls -al $ARTILLERY_SHOTS
-  require_shots="require \"$ARTILLERY_SHOTS/**\""
+  require_shots="require \"$ARTILLERY_SHOTS/*.cr\""
 fi
 
 cd "$(dirname "$0")/../"
@@ -20,7 +20,7 @@ if [[ $1 == "--bazooka" ]]; then
   crystal eval 'require "artillery"; Artillery::Mountpoint.run' &
   MOUNTPOINT="$!"
 
-  crystal eval "require \"artillery\";
+  crystal eval "require \"artillery\"
                 $require_shots
                 Artillery::Launcher.run" &
   LAUNCHER="$!"
