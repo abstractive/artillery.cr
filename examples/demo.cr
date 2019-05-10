@@ -1,5 +1,4 @@
-require "../src/artillery/launcher"
-require "../src/artillery/shot"
+require "../src/artillery/bazooka"
 
 require "./demo/**"
 

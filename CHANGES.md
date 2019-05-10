@@ -1,3 +1,8 @@
+# 0.0.0.25 2019-05-10 09:18 ( 8Nf9 )
+
+- Provide src/artillery/bazooka and bin/bazooka
+- Update bin/artillery to launch PWD as bazooka instance
+
 # 0.0.0.24 2019-05-10 09:08 ( 8Nf9 )
 
 - Fix permissions of bin/ commands

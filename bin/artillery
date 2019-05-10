@@ -5,4 +5,7 @@ echo "Artillery."
 echo "Working directory:"
 echo `pwd`
 
-shards install
+if [[ $1 -eq "--bazooka" ]]; then
+  shards install
+  crystal eval 'require "artillery/bazooka"; require "./shots/**"; Artillery::Launcher.run'
+fi
