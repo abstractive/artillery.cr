@@ -1,0 +1,45 @@
+###
+version: "3.7"
+services:
+
+  mountpoint:
+    restart: unless-stopped
+    read_only: true
+    build:
+      context: .
+      dockerfile: Dockerfile.mountpoint
+    image: artillery-mountpoint:latest
+    volumes:
+      - ./src:/src
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+    environment:
+      ENVIRONMENT: development
+      KEMAL_ENV: development
+      LOG_LEVEL: debug
+    ports:
+      - target: 3000
+        published: 3000
+        mode: host
+
+  launcher:
+    restart: unless-stopped
+    volumes:
+      - ./src:/src
+      - type: tmpfs
+        target: /tmp
+        tmpfs:
+          size: 5242880
+          mode: 0733
+      - type: tmpfs
+        target: /system/tmp
+        tmpfs:
+          size: 5242880
+          mode: 0700
+    build:
+      context: .
+      dockerfile: Dockerfile.launcher
+    image: artillery-launcher
+    environment:
+      TMPDIR: /tmp
+      ENVIRONMENT: production
+      LOG_LEVEL: debug
