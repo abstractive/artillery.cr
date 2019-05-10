@@ -1,3 +1,7 @@
+# 0.0.0.21 2019-05-10 03:31 ( 7Mf8 )
+
+- Clean up examples
+
 # 0.0.0.20 2019-05-10 02:52 ( 7Mf8 )
 
 - Massive dive into Crystal internals and returned alive
