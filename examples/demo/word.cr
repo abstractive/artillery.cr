@@ -1,8 +1,8 @@
 class Word < Artillery::Shot
 
-  vector "/word"
+  vector :post, "/word"
 
-  def get
+  def post
     success({ hello: "World" }.to_json)
   end
 
