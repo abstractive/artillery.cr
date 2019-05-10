@@ -1,3 +1,8 @@
+# 0.0.0.28 2019-05-10 11:52 ( 8Nf9 )
+
+- Fighting with wierd issue where Shots are persisting for no apparent reason.
+- Add redirect support
+
 # 0.0.0.27 2019-05-10 09:32 ( 8Nf9 )
 
 - Become ghetto fabulous about Bazooka and use bash to parallelize vs. using fibers.

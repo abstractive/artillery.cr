@@ -17,6 +17,7 @@ module Artillery
     #de TODO: Infer uri by file-location unless specified
     @@vectors = Array(
       NamedTuple(
+        redirect: String?,
         path: String,
         method: Symbol,
         object: String
@@ -97,11 +98,21 @@ module Artillery
           else
             log "Method not found: #{shell.method}"
           end
-          @@client.send_string({
-            body: (shot.response.body || "").to_s,
-            status: (shot.response.status || "").to_s,
-            headers: (shot.response.headers || Hash).to_s,
-          }.to_json)      
+
+          respond = if shot.redirect?
+            {
+              redirect: shot.redirect,
+              body: "",
+              status: 302
+            }
+          else
+            {
+              body: (shot.response.body || "").to_s,
+              status: (shot.response.status || "").to_s,
+              headers: (shot.response.headers || Hash).to_s,
+            }
+          end
+          @@client.send_string(respond.to_json)
         rescue ex
           log "#{ex.class.name}: #{ex.message}\n#{ex.backtrace.join('\n')}"
           reset

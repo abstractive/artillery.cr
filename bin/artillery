@@ -10,10 +10,10 @@ echo "Working directory: `pwd`"
 if [[ $1 == "--bazooka" ]]; then
   shards install
 
-  crystal eval 'require "./src/artillery/mountpoint"; Artillery::Mountpoint.run' &
+  crystal eval 'require "artillery/mountpoint"; Artillery::Mountpoint.run' &
   MOUNTPOINT="$!"
 
-  crystal eval "require \"./src/artillery/bazooka\";
+  crystal eval "require \"artillery/bazooka\";
                 require \"$ARTILLERY_SHOTS/**\"
                 Artillery::Launcher.run" &
 

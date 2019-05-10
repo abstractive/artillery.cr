@@ -3,6 +3,7 @@ require "../artillery"
 
 if ENV["ARTILLERY_PUBLIC"]
   Kemal.config.public_folder = ENV["ARTILLERY_PUBLIC"]
+  puts "Public Directory: #{ENV["ARTILLERY_PUBLIC"]}"
 end
 
 module Artillery
@@ -35,8 +36,12 @@ module Artillery
           begin
             @@server.send_string(Artillery::Shell::Request.as_json_from_context(env))
             response = JSON.parse(@@server.receive_string) #de Directly output to socket.
-            env.response.status_code = Int32.new("#{response["status"]}")
-            "#{response["body"]}"
+            if response["redirect"]?
+              env.redirect "#{response["redirect"]}"
+            else
+              env.response.status_code = Int32.new("#{response["status"]}")
+              "#{response["body"]}"
+            end
           rescue ex
             log "#{ex.class.name}: #{ex.message}\n#{ex.backtrace.join('\n')}"
             reset

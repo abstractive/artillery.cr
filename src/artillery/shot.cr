@@ -5,6 +5,7 @@ module Artillery
 
     property request : Artillery::Shell::Request
     property response : Artillery::Shell::Response
+    property redirect : String?
 
     @@attached = [] of String
 
@@ -24,6 +25,11 @@ module Artillery
       log "REQUEST: #{request.path}"
       @request = request
       @response = Shell::Response.new
+      @redirect = nil
+    end
+
+    def redirect?
+      !@redirect.nil?
     end
 
     {% for method in Artillery::HTTP_METHODS %}
@@ -43,6 +49,9 @@ module Artillery
     def success(body : String?)
       @response.status = 200
       @response.body = body unless body.nil?
+    end
+
+    def redirect(@redirect)
     end
   
     def error(
