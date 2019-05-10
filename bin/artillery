@@ -25,6 +25,6 @@ if [[ $1 == "--bazooka" ]]; then
                 Artillery::Launcher.run" &
   LAUNCHER="$!"
 
-  trap "kill $MOUNTPOINT $LAUNCHER" exit INT TERM
+  trap "kill $MOUNTPOINT $LAUNCHER 2> /dev/null" exit INT TERM
   wait
 fi
