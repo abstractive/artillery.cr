@@ -1,3 +1,8 @@
+# 0.0.0.31 2019-05-10 12:46 ( 8Nf9 )
+
+- Found the issue. There were old Launchers running on this development environment. Sigh.
+- Suppress bin/artillery errors if PIDs already dead
+
 # 0.0.0.30 2019-05-10 12:35 ( 8Nf9 )
 
 - Fix path in require statement
