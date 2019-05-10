@@ -1,6 +1,7 @@
 # 0.0.0.22 2019-05-10 07:39 ( 8Nf9 )
 
 - Show three sample installations in README.md before making the options actually work
+- Add `artillery` CLI placeholder
 
 # 0.0.0.21 2019-05-10 03:31 ( 7Mf8 )
 
