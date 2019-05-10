@@ -2,13 +2,12 @@ require "zeromq"
 require "json"
 
 module Artillery
-  ARTILLERY_SHELL_HEADERS = ENV["ARTILLERY_SHELL_HEADERS"] ||= nil
+  USE_SHELL_HEADERS = ENV["ARTILLERY_SHELL_HEADERS"] ||= nil
 end
+
+#de Only load essentials.
+#de Individual applications in src/processes/ require their own specialized object requirements.
 
 require "./artillery/logger"
 require "./artillery/shell/request"
 require "./artillery/shell/response"
-
-#de require "./artillery/mountpoint"
-#de require "./artillery/launcher"
-#de require "./artillery/projectile"
