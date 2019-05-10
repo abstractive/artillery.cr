@@ -4,19 +4,25 @@ PROJECTILE="`pwd`"
 export ARTILLERY_PUBLIC=$PROJECTILE/public
 export ARTILLERY_SHOTS=$PROJECTILE/shots
 
+require_shots=""
+if [ -d $ARTILLERY_SHOTS ]
+then
+  ls -al $ARTILLERY_SHOTS
+  require_shots="require \"$ARTILLERY_SHOTS/**\""
+fi
+
 cd "$(dirname "$0")/../"
 echo "Working directory: `pwd`"
 
 if [[ $1 == "--bazooka" ]]; then
   shards install
 
-  crystal eval 'require "artillery/mountpoint"; Artillery::Mountpoint.run' &
+  crystal eval 'require "artillery"; Artillery::Mountpoint.run' &
   MOUNTPOINT="$!"
 
-  crystal eval "require \"artillery/bazooka\";
-                require \"$ARTILLERY_SHOTS/**\"
+  crystal eval "require \"artillery\";
+                $require_shots
                 Artillery::Launcher.run" &
-
   LAUNCHER="$!"
 
   trap "kill $MOUNTPOINT $LAUNCHER" exit INT TERM

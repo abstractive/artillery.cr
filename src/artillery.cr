@@ -10,8 +10,13 @@ end
 #de Only load essentials.
 #de Individual applications in src/processes/ require their own specialized object requirements.
 
+require "./artillery/overrides/*"
 require "./artillery/macros/*"
 
 require "./artillery/logger"
 require "./artillery/shell/request"
 require "./artillery/shell/response"
+
+require "./artillery/mountpoint"
+require "./artillery/launchpoint"
+require "./artillery/shot"
