@@ -1,3 +1,8 @@
+# 0.0.0.23 2019-05-10 09:06 ( 8Nf9 )
+
+- Previous issue was that `Crystal` needs shards tagged with "v" prepended to version
+- Fixed .gitignore that was removing `art` commands and `artillery`
+
 # 0.0.0.22 2019-05-10 07:39 ( 8Nf9 )
 
 - Show three sample installations in README.md before making the options actually work

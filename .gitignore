@@ -1,6 +1,6 @@
 /docs/
 /lib/
-/bin/
+/bin/artillery-*
 /.shards/
 *.dwarf
 /shard.lock
