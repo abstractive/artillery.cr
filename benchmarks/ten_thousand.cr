@@ -3,7 +3,7 @@ require "http/client"
 total_requests = 10_000
 
 puts "Starting test, with #{total_requests} requests."
-puts "Make sure a Mount and Launcher are online..."
+puts "Make sure a Mountpoint and Launcher are online..."
 
 start = Time.now
 i = 0
