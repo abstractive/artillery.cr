@@ -12,7 +12,7 @@ module Artillery
     @@client = uninitialized ZMQ::Socket
 
     @@index = uninitialized Radix::Tree(String)
-    @@attached = [] of String
+    #de @@attached = [] of String
 
     #de TODO: Infer uri by file-location unless specified
     @@vectors = Array(
@@ -33,7 +33,7 @@ module Artillery
       @@client = @@context.socket(ZMQ::REP)
       @@client.connect(MOUNTPOINT_LOCATION)
       @@client.set_socket_option(ZMQ::LINGER, 0)
-      log "Starting Launcher", "Artillery"
+      log "Started", "Artillery::Launcher"
     end
 
     def self.reset
@@ -43,9 +43,9 @@ module Artillery
     rescue
     end
 
-    def self.attach(object)
-      @@attached << object
-    end
+    #de def self.attach(object)
+    #de   @@attached << object
+    #de end
 
     def self.load(vector)
       @@vectors.push(vector)

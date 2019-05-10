@@ -4,27 +4,77 @@ PROJECTILE="`pwd`"
 export ARTILLERY_PUBLIC=$PROJECTILE/public
 export ARTILLERY_SHOTS=$PROJECTILE/shots
 
-require_shots=""
-if [ -d $ARTILLERY_SHOTS ]
-then
-  ls -al $ARTILLERY_SHOTS
-  require_shots="require \"$ARTILLERY_SHOTS/*.cr\""
+function timestamp {
+  echo `date '+%Y-%m-%d %H:%M:%S.%3N'`
+}
+
+function log {
+  echo "$(timestamp) > $1"
+}
+
+function join { local IFS=$'\n'; echo "$*"; }
+function hasArgument () {
+  local e match="$1"
+  shift
+  for e; do [[ "$e" == "$match" ]] && return 1; done
+  return 0
+}
+
+hasArgument "--bazooka" $@
+BAZOOKA=$?
+
+hasArgument "--update" $@
+UPDATE=$?
+
+hasArgument "--debug" $@
+DEBUG=$?
+
+required_files=""
+REQUIRED=()
+
+if [ -d $ARTILLERY_SHOTS ]; then
+  for line in $(find $ARTILLERY_SHOTS -name "*.cr"); do
+    cleaned=${line#"$PROJECTILE"}
+    REQUIRED+=("require=\".$cleaned\";")
+  done
+  required_files=$(join ${REQUIRED[@]})
+  required_files=`echo -n $required_files | sed -r 's/[=]+/ /g' | sed -r 's/[;]+/\\n/g'`
 fi
 
 cd "$(dirname "$0")/../"
-echo "Working directory: `pwd`"
+if [[ $DEBUG -eq 1 ]]; then
+  log "Working directory: `pwd`"
+  export ARTILLERY_LOG_LEVEL='debug'
+fi
 
-if [[ $1 == "--bazooka" ]]; then
-  shards install
+if [[ $UPDATE -eq 1 ]]; then
+  shards update
+fi
 
-  crystal eval 'require "artillery"; Artillery::Mountpoint.run' &
+if [[ $BAZOOKA -eq 1 ]]; then
+
+  log "Bazooka > Starting Artillery::Mountpoint ..."
+  crystal eval "require \"artillery\"; Artillery::Mountpoint.run" &
   MOUNTPOINT="$!"
 
-  crystal eval "require \"artillery\"
-                $require_shots
-                Artillery::Launcher.run" &
+  log "Bazooka > Waiting 4 seconds for Mountpoint to settle"
+  sleep 4
+
+  PROGRAM="require \"artillery\";
+  $required_files;
+  Artillery::Launcher.run"
+
+  if [[ $DEBUG -eq 1 ]]; then
+    echo -e "LAUNCHER PROGRAM:\n$PROGRAM"
+  fi
+
+  log "Bazooka > Starting Artillery::Launcher ..."
+  crystal eval "$PROGRAM" &
   LAUNCHER="$!"
 
-  trap "kill $MOUNTPOINT $LAUNCHER 2> /dev/null" exit INT TERM
+  trap "log 'Putting Bazooka away...'
+        kill $MOUNTPOINT $LAUNCHER 2> /dev/null
+        killall -9 crystal-run-eval.tmp 2> /dev/null
+        sleep 2" exit INT TERM
   wait
 fi

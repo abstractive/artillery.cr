@@ -1,9 +1,11 @@
 require "kemal"
 require "../artillery"
+require "../artillery/overrides/kemal"
 
 if ENV["ARTILLERY_PUBLIC"]
   Kemal.config.public_folder = ENV["ARTILLERY_PUBLIC"]
-  puts "Public Directory: #{ENV["ARTILLERY_PUBLIC"]}"
+  Kemal.config.shutdown_message = false
+  #de puts "Public Directory: #{ENV["ARTILLERY_PUBLIC"]}"
 end
 
 module Artillery
@@ -19,7 +21,7 @@ module Artillery
       @@server = @@context.socket(ZMQ::REQ)
       @@server.set_socket_option(ZMQ::LINGER, 0)
       @@server.bind(MOUNTPOINT_LOCATION)
-      log "Starting Mountpoint", "Artillery"
+      log "Started", "Artillery::Mountpoint"
     end
 
     def self.reset

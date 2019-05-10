@@ -4,8 +4,7 @@ module Artillery
     extend self
 
     def log(message, tag=self.class.name)
-      puts caller[0]
-      puts output = "#{timestamp} > #{((tag) ? "#{tag}: " : "") + message}"
+      puts output = "#{timestamp} > #{((tag) ? "#{tag} > " : "") + message}"
       output
     end
 

@@ -10,9 +10,9 @@ module Artillery
     @@attached = [] of String
 
     macro inherited
-      puts "INHERETED: #{self}"
+      #de puts "INHERETED: #{self}"
       #de Must have vectors
-      Artillery::Launcher.attach "#{self}"
+      #de Artillery::Launcher.attach "#{self}"
     end
 
     def self.attached
@@ -64,6 +64,7 @@ module Artillery
 
     def self.vector(path : String)
       Artillery::Launcher.load({
+        redirect: nil,
         method: :get,
         path: path,
         object: "#{self}"
@@ -72,6 +73,7 @@ module Artillery
 
     def self.vector(method : Symbol, path : String)
       Artillery::Launcher.load({
+        redirect: nil,
         method: method,
         path: path,
         object: "#{self}"
@@ -80,6 +82,7 @@ module Artillery
 
     def self.vector(method : Symbol, path : String, execute : Symbol)
       Artillery::Launcher.load({
+        redirect: nil,
         method: method,
         path: path,
         object: "#{self}"

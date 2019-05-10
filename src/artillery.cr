@@ -5,6 +5,7 @@ module Artillery
   MOUNTPOINT_LOCATION = ENV["ARTILLERY_MOUNTPOINT"] ||= "tcp://127.0.0.1:5555"
   HTTP_METHODS = %w(get post put patch delete options)
   USE_SHELL_HEADERS = ENV["ARTILLERY_SHELL_HEADERS"] ||= nil
+  USE_SHOTS = ENV["ARTILLERY_SHOTS"] ||= nil
 end
 
 #de Only load essentials.
@@ -20,3 +21,7 @@ require "./artillery/shell/response"
 require "./artillery/mountpoint"
 require "./artillery/launcher"
 require "./artillery/shot"
+
+if Artillery::USE_SHOTS
+  puts "SHOTS: #{Artillery::USE_SHOTS}"
+end
