@@ -1,6 +1,6 @@
 class HelloWorld < Artillery::Shot
 
-  vector "/"
+  vector "/hello"
 
   def get
     success "Hello World"

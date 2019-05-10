@@ -1,3 +1,8 @@
+# 0.0.0.27 2019-05-10 09:32 ( 8Nf9 )
+
+- Become ghetto fabulous about Bazooka and use bash to parallelize vs. using fibers.
+- Struggling to get invoked properly in roaming PWD
+
 # 0.0.0.26 2019-05-10 09:32 ( 8Nf9 )
 
 - Restructure examples/demo as example of `bazooka` invokation

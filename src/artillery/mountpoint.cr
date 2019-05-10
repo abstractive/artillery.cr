@@ -1,6 +1,10 @@
 require "kemal"
 require "../artillery"
 
+if ENV["ARTILLERY_PUBLIC"]
+  Kemal.config.public_folder = ENV["ARTILLERY_PUBLIC"]
+end
+
 module Artillery
   class Mountpoint
 
@@ -13,7 +17,7 @@ module Artillery
       @@context = ZMQ::Context.new
       @@server = @@context.socket(ZMQ::REQ)
       @@server.set_socket_option(ZMQ::LINGER, 0)
-      @@server.bind("tcp://127.0.0.1:5555")
+      @@server.bind(MOUNTPOINT_LOCATION)
       log "Starting Mountpoint", "Artillery"
     end
 

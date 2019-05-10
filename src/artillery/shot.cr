@@ -9,7 +9,7 @@ module Artillery
     @@attached = [] of String
 
     macro inherited
-      #de puts "INHERETED: #{self}"
+      puts "INHERETED: #{self}"
       #de Must have vectors
       Artillery::Launcher.attach "#{self}"
     end

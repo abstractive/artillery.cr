@@ -30,7 +30,7 @@ module Artillery
     def self.start
       @@context = ZMQ::Context.new
       @@client = @@context.socket(ZMQ::REP)
-      @@client.connect("tcp://127.0.0.1:5555")
+      @@client.connect(MOUNTPOINT_LOCATION)
       @@client.set_socket_option(ZMQ::LINGER, 0)
       log "Starting Launcher", "Artillery"
     end

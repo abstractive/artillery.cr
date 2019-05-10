@@ -2,7 +2,8 @@ require "zeromq"
 require "json"
 
 module Artillery
-  HTTP_METHODS   = %w(get post put patch delete options)
+  MOUNTPOINT_LOCATION = ENV["ARTILLERY_MOUNTPOINT"] ||= "tcp://127.0.0.1:5555"
+  HTTP_METHODS = %w(get post put patch delete options)
   USE_SHELL_HEADERS = ENV["ARTILLERY_SHELL_HEADERS"] ||= nil
 end
 
