@@ -1,7 +1,7 @@
 require "../src/artillery/launcher"
-require "../src/artillery/projectile"
+require "../src/artillery/shot"
 
-class HelloWorld < Artillery::Projectile
+class HelloWorld < Artillery::Shot
 
   vector "/"
 
@@ -11,7 +11,7 @@ class HelloWorld < Artillery::Projectile
 
 end
 
-class FooBar < Artillery::Projectile
+class FooBar < Artillery::Shot
 
   vector "/foo/bar"
 

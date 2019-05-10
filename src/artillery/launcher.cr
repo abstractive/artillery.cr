@@ -1,4 +1,5 @@
 require "../artillery"
+require "radix"
 
 module Artillery
   class Launcher

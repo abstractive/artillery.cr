@@ -1,6 +1,6 @@
 require "../spec_helper"
 
-describe Artillery::Projectile do
+describe Artillery::Shot do
   it "works" do
     false.should eq(true)
   end

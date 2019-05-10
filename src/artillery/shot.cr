@@ -1,8 +1,7 @@
 require "../artillery"
-require "radix"
 
 module Artillery
-  class Projectile
+  class Shot
 
     include Logger
 
