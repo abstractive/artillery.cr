@@ -28,9 +28,8 @@ module Artillery
       loop do
         begin
           request = Artillery::Shell::Request.from_json(@@client.receive_string)
-          log request.path
           @@client.send_string("#{timestamp}/l: RESPONSE")
-          log "#{timestamp}/l: #{request}"
+          log "#{timestamp}/l: #{request.path}"
         rescue ex
           log "#{ex.class.name}: #{ex.message}\n#{ex.backtrace.join('\n')}"
           reset

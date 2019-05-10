@@ -1,10 +1,24 @@
-# 0.0.0.9 2019-05-07 14:08 ( 5Kf6 )
+# 0.0.0.13 2019-05-09 18:40 ( 7Mf8 )
+
+- Never Forget 5/9 // Mr. Robot
+- Fixed versions for previous two entries
+- Added Dockerfile.* and docker-compose.yml per #18
+- Added first scripts per #18 also, need to test further
+- Still debugging ZeroMQ issues for Docker containers
+
+# 0.0.0.11 2019-05-07 14:08 ( 5Kf6 )
+
+- Renamed `mount` to `mointpoint` for clarity, and lack of conflict with system binary.
+- Clean up some expensive `puts` activity
+- Prepare basic Dockerfile start points
+
+# 0.0.0.10 2019-05-07 14:08 ( 5Kf6 )
 
 - Added minimal benchmarking.
 
 # 0.0.0.9 2019-05-07 13:31 ( 5Kf6 )
 
-- Catch failure of socket and reset for `Launcher` and `Mount` per #9
+- Catch failure of socket and reset for `Launcher` and `Mountpoint` per #9
 - Refactor `Projectile` toward storing routes differently in `Launcher`
 - Beginning of `Projectile.vectors` leading to radix tree next
 - Logger extends self
@@ -17,12 +31,12 @@
 # 0.0.0.4 2019-05-07 02:25 ( 4Jf5 )
 
 - Anticipate `nginx` setup process
-- Add failing tests for `Mount`, `Launcher`, and `Projectile`
+- Add failing tests for `Mountpoint`, `Launcher`, and `Projectile`
 - Add `Logger` module skeleton
 
 # 0.0.0.3 2019-05-07 00:47 ( 4Jf5 )
 
-- Routing of HTTP from `mount` through 0MQ to `launchers`
+- Routing of HTTP from `mountpoint` through 0MQ to `launchers`
 
 # 0.0.0.2 2019-05-07 00:24 ( 4Jf5 )
 

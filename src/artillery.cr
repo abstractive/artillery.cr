@@ -9,6 +9,6 @@ require "./artillery/logger"
 require "./artillery/shell/request"
 require "./artillery/shell/response"
 
-#de require "./artillery/mount"
+#de require "./artillery/mountpoint"
 #de require "./artillery/launcher"
 #de require "./artillery/projectile"

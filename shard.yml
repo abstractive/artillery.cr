@@ -1,5 +1,5 @@
 name: artillery
-version: 0.0.1.0
+version: 0.0.0.13
 
 description: Serverfree object-oriented microservice architecture.
 
@@ -20,3 +20,9 @@ dependencies:
     github: crystal-community/zeromq-crystal
   kemal:
     github: kemalcr/kemal
+
+targets:
+  artillery-mountpoint:
+    main: src/artillery/run/mountpoint.cr
+  artillery-launcher:
+    main: src/artillery/run/launcher.cr

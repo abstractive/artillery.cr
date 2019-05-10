@@ -2,7 +2,7 @@ require "kemal"
 require "../artillery"
 
 module Artillery
-  class Mount
+  class Mountpoint
 
     extend Logger
 
@@ -16,7 +16,7 @@ module Artillery
       @@server = @@context.socket(ZMQ::REQ)
       @@server.set_socket_option(ZMQ::LINGER, 0)
       @@server.bind("tcp://127.0.0.1:5555")
-      log "Starting Mount Point", "Artillery"
+      log "Starting Mountpoint", "Artillery"
     end
 
     def self.reset
@@ -32,18 +32,17 @@ module Artillery
         Kemal::RouteHandler::INSTANCE.add_route({{method.upcase}}, "/*") do |env|
           begin
             #de log env.inspect
-            log "#{timestamp}/m1: #{env.request.path} "
+            #de log "#{timestamp}/m1: #{env.request.path} "
             @@server.send_string(Artillery::Shell::Request.as_json_from_context(env))
-            @@server.receive_string
+            @@server.receive_string #de Directly output to socket.
           rescue ex
             log "#{ex.class.name}: #{ex.message}\n#{ex.backtrace.join('\n')}"
             reset
           end
         end
       {% end %}
-
       Kemal.run
-
     end
+
   end
 end

@@ -1,6 +1,6 @@
 # Setting up `0MQ`
 
-`Artillery` currently uses ZeroMQ for messaging between `Mount` points, and `Launcher` instances, firing projectiles on request. These instructions prepare the underlying ZeroMQ requirements.
+`Artillery` currently uses ZeroMQ for messaging between `Mountpoint` and `Launcher` instances, firing projectiles on request. These instructions prepare the underlying ZeroMQ requirements.
 
 ---
 
