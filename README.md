@@ -30,7 +30,7 @@ All information about this exists in [Issues](https://github.com/abstractive/art
 
 `Artillery` can be invoked several ways; here are three:
 
-### Local environment, using the nimble but effective `Bazooka` style [ Working ]
+### Local environment, using the nimble but effective `Bazooka` style `{ Working }`
 
 From within a clone of a projectile repository you want to activate run this commands:
 
@@ -38,7 +38,7 @@ From within a clone of a projectile repository you want to activate run this com
 $ bin/artillery --bazooka
 ```
 
-### Cloud deployment of a `Mountpoint` and several `Launcher` instances [ Pending* ]
+### Cloud deployment of a `Mountpoint` and several `Launcher` instances [ *Pending* ]
 
 In `artillery.yml`, include the following:
 
@@ -59,7 +59,7 @@ Then, run the following in the root of the repository, wherever it is checked ou
 $ sudo artillery
 ```
 
-### Local deployment of a `Mountpoint` and several `Launcher` instances [ Pending* ]
+### Local deployment of a `Mountpoint` and several `Launcher` instances [ *Pending* ]
 
 In `artillery.yml`, include the following:
 
@@ -78,15 +78,15 @@ $ sudo artillery development
 
 ### Other configurations:
 
-Details coming.
+> More details coming...
 
-### Pending Invokations:
+## Pending Invokations:
 
 > Right now the `Docker` cluster configurations are broken, but it is mostly there. Once resolved, the remaining invokation styles will be available quickly thereafter, and will provide reduncancy, load-balancing, etc. The `Bazooka` demonstrates the concept, then down the line it will remain as the primary means of doing local development using the exact infrastructure `Shot` instances are deployed to in public.
 
 ---
 
-Currently and foreseeably MIT licensed, because if you want code without people, and you want to run off with the benefit of community work, good riddance anyway. Otherwise, do what you're going to do, and if you've got too much going on to contribute, you're probably making a contribution to the world some other way. But don't be a stranger. This code is intended to bring people together.
+Currently and foreseeably MIT licensed, because if you want code without people, and you want to run off with the benefit of community work, good riddance anyway. I guess that's one version of decentrality. Most people are just busy and trying to get ahead. So do what you're going to do, and if you've got too much going on to contribute, you're probably making a contribution to the world some other way. But don't be a stranger. This code is intended to bring people together and raise the bar.
 
 ---
 
