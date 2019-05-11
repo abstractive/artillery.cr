@@ -1,4 +1,7 @@
-# 0.0.1.5   2019-05-10 16:49 ( 8Nf9 )
+# 0.0.1.6   2019-05-10 18:15 ( 8Nf9 )
+- Fix --port-zeromq= parameter.
+
+# 0.0.1.5   2019-05-10 18:05 ( 8Nf9 )
 - Overhaul bin/artillery to use --port-http= --port-zeromq= --zeromq= ( schema ) --ip= ( exposed interface )
 - Now it's possible to start independent clusters, and killing one doesn't affect the others on the same machine
 - Adapt defaults for most constants / environment variables to pull from exports in bin/artillery, and artillery.yml in future

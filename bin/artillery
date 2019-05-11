@@ -34,7 +34,7 @@ hasArgument   "--debug" $@;         DEBUG=$?
 
 hasParameter  "--ip=" $@;           HAS_INTERFACE=$?
 hasParameter  "--zeromq=" $@;       HAS_ZEROMQ_URL=$?
-hasParameter  "--port-zeromq=" $@;  HAS_ZEROMQ_PORT=$?
+hasParameter  "--port-zeromq=" $@;  HAS_PORT_ZEROMQ=$?
 hasParameter  "--port-http=" $@;    HAS_PORT_HTTP=$?
 
 if [[ $HAS_INTERFACE -eq 1 ]]; then
