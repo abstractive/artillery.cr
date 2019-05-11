@@ -25,21 +25,20 @@ All information about this exists in [Issues](https://github.com/abstractive/art
 
 2. Run `shards install`
 
-3. Setup `docker-compose`
 
-## Implementation
+## Invokation
 
-`Artillery` can be invoked several ways, here are three:
+`Artillery` can be invoked several ways; here are three:
 
-### Local environment, using `Bazooka`
+### Local environment, using the nimble but effective `Bazooka` style [ Working ]
 
-From within a clone of a projectile repository you want to activate, run:
+From within a clone of a projectile repository you want to activate run this commands:
 
 ```
-$ artillery --bazooka
+$ bin/artillery --bazooka
 ```
 
-### Cloud deployment of a `Mountpoint` and several `Launcher` instances
+### Cloud deployment of a `Mountpoint` and several `Launcher` instances [ Pending* ]
 
 In `artillery.yml`, include the following:
 
@@ -60,7 +59,7 @@ Then, run the following in the root of the repository, wherever it is checked ou
 $ sudo artillery
 ```
 
-### Local deployment of a `Mountpoint` and several `Launcher` instances
+### Local deployment of a `Mountpoint` and several `Launcher` instances [ Pending* ]
 
 In `artillery.yml`, include the following:
 
@@ -80,6 +79,10 @@ $ sudo artillery development
 ### Other configurations:
 
 Details coming.
+
+### Pending Invokations:
+
+> Right now the `Docker` cluster configurations are broken, but it is mostly there. Once resolved, the remaining invokation styles will be available quickly thereafter, and will provide reduncancy, load-balancing, etc. The `Bazooka` demonstrates the concept, then down the line it will remain as the primary means of doing local development using the exact infrastructure `Shot` instances are deployed to in public.
 
 ---
 
