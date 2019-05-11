@@ -11,9 +11,69 @@ function hasArgument () {
   return 0
 }
 
-hasArgument "--bazooka" $@;  BAZOOKA=$?
-hasArgument "--update" $@;   UPDATE=$?
-hasArgument "--debug" $@;    DEBUG=$?
+function hasParameter () {
+  local e match="$1"
+  shift
+  for e; do
+    [[ $e = $match* ]] && return 1
+  done
+  return 0
+}
+
+function getParameter () {
+  local e match="$1"
+  shift
+  for e; do
+    [[ $e = $match* ]] && echo ${e#$match}
+  done
+}
+
+hasArgument   "--bazooka" $@;       BAZOOKA=$?
+hasArgument   "--update" $@;        UPDATE=$?
+hasArgument   "--debug" $@;         DEBUG=$?
+
+hasParameter  "--ip=" $@;           HAS_INTERFACE=$?
+hasParameter  "--zeromq=" $@;       HAS_ZEROMQ_URL=$?
+hasParameter  "--port-zeromq=" $@;  HAS_ZEROMQ_PORT=$?
+hasParameter  "--port-http=" $@;    HAS_PORT_HTTP=$?
+
+if [[ $HAS_INTERFACE -eq 1 ]]; then
+  export ARTILLERY_EXPOSED_INTERFACE=$(getParameter "--ip=" $@)
+fi
+
+if [[ $HAS_ZEROMQ_URL -eq 1 ]]; then
+  export ARTILLERY_ZEROMQ_URL=$(getParameter "--zeromq=" $@)
+fi
+
+if [[ $HAS_PORT_ZEROMQ -eq 1 ]]; then
+  export ARTILLERY_PORT_ZEROMQ=$(getParameter "--port-zeromq=" $@)
+fi
+
+if [[ $HAS_PORT_HTTP -eq 1 ]]; then
+  export ARTILLERY_PORT_HTTP=$(getParameter "--port-http=" $@)
+fi
+
+if [[ $DEBUG -eq 1 ]]; then
+  log "HAS INTERFACE? $HAS_INTERFACE"
+  if [[ $HAS_INTERFACE -eq 1 ]]; then
+    log "HTTP PORT: $ARTILLERY_EXPOSED_INTERFACE"
+  fi
+
+  log "HAS ZEROMQ PORT? $HAS_ZEROMQ_URL"
+  if [[ $HAS_ZEROMQ_URL -eq 1 ]]; then
+    log "ZEROMQ PORT: $ARTILLERY_ZEROMQ_URL"
+  fi
+
+  log "HAS ZEROMQ PORT? $HAS_PORT_ZEROMQ"
+  if [[ $HAS_PORT_ZEROMQ -eq 1 ]]; then
+    log "ZEROMQ PORT: $ARTILLERY_PORT_ZEROMQ"
+  fi
+
+  log "HAS HTTP PORT? $HAS_PORT_HTTP"
+  if [[ $HAS_PORT_HTTP -eq 1 ]]; then
+    log "HTTP PORT: $ARTILLERY_PORT_HTTP"
+  fi
+fi
 
 PROJECTILE="`pwd`"
 export ARTILLERY_PUBLIC=$PROJECTILE/public
@@ -77,9 +137,10 @@ if [[ $BAZOOKA -eq 1 ]]; then
   crystal eval "$PROGRAM" &
   LAUNCHER="$!"
 
+  #de TODO: This shuts down ALL Bazooka driven instances!
+  #de       Find another way to launch, such as compiling into /tmp/
   trap "log 'Putting Bazooka away...'
         kill $MOUNTPOINT $LAUNCHER 2> /dev/null
-        killall -9 crystal-run-eval.tmp 2> /dev/null
         sleep 2" exit INT TERM
   wait
 fi

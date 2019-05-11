@@ -2,11 +2,10 @@ require "kemal"
 require "../artillery"
 require "../artillery/overrides/kemal"
 
-if ENV["ARTILLERY_PUBLIC"]
-  Kemal.config.public_folder = ENV["ARTILLERY_PUBLIC"]
-  Kemal.config.shutdown_message = false
-  #de puts "Public Directory: #{ENV["ARTILLERY_PUBLIC"]}"
-end
+Kemal.config.host_binding = Artillery::MOUNTPOINT_INTERFACE
+Kemal.config.public_folder = Artillery::PUBLIC_DIRECTORY
+Kemal.config.port = Int32.new(Artillery::MOUNTPOINT_PORT_HTTP)
+Kemal.config.shutdown_message = false
 
 module Artillery
   class Mountpoint
