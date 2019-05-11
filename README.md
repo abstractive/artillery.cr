@@ -25,6 +25,8 @@ All information about this exists in [Issues](https://github.com/abstractive/art
 
 2. Run `shards install`
 
+3. If not running containerized: **[Setup ZeroMQ](ZEROMQ.md)**
+
 
 ## Invokation
 

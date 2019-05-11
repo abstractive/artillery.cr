@@ -1,3 +1,6 @@
+# 0.0.1.7   2019-05-10 19:51 ( 8Nf9 )
+- Tweak [README.md](README.md) to point to [ZEROMQ.md](ZEROMQ.md) setup walkthrough for `ZeroMQ` in Ubuntu-like environments.
+
 # 0.0.1.6   2019-05-10 18:15 ( 8Nf9 )
 - Fix --port-zeromq= parameter.
 
