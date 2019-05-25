@@ -79,6 +79,7 @@ PROJECTILE="`pwd`"
 export ARTILLERY_PUBLIC=$PROJECTILE/public
 export ARTILLERY_SHOTS=$PROJECTILE/shots
 working_directory=$PROJECTILE
+export ARTILLERY_CALLSITE=$PROJECTILE
 
 cd "$(dirname "$0")/../"
 

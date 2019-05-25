@@ -1,5 +1,5 @@
 name: artillery
-version: 0.0.1.7
+version: 0.0.1.9
 
 description: Serverfree object-oriented microservice architecture.
 
@@ -9,7 +9,6 @@ authors:
 crystal: 0.28.0
 
 executables:
-  - art
   - artillery
   - bazooka
 
