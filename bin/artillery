@@ -28,6 +28,14 @@ function getParameter () {
   done
 }
 
+hasArgument   "--killall" $@;       KILLALL=$?
+if [[ $KILLALL -eq 1 ]]; then
+  log "Killing all Artillery::Bazooka processes..."
+  killall -9 crystal-run-eval.tmp 2> /dev/null
+  killall -9 crystal 2> /dev/null
+  exit
+fi
+
 hasArgument   "--bazooka" $@;       BAZOOKA=$?
 hasArgument   "--update" $@;        UPDATE=$?
 hasArgument   "--debug" $@;         DEBUG=$?
@@ -119,6 +127,7 @@ if [[ $UPDATE -eq 1 ]]; then
 fi
 
 if [[ $BAZOOKA -eq 1 ]]; then
+
   log "Bazooka > Starting Artillery::Mountpoint ..."
   crystal eval "require $ARTILLERY_BASE; Artillery::Mountpoint.run" &
   MOUNTPOINT="$!"

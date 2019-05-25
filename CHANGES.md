@@ -1,3 +1,6 @@
+# 0.0.1.10  2019-05-25 16:06 [ AHv6 ]
+* Added --killall to bin/artillery
+
 # 0.0.1.9   2019-05-25 16:06 [ AHv6 ]
 * Disable `bin/art` executable for now
 * Add `artillery.yaml` support for basic defaults

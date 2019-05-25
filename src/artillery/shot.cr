@@ -22,7 +22,7 @@ module Artillery
     include Logger
 
     def initialize(request : Shell::Request)
-      log "REQUEST: #{request.path}"
+      #de log "REQUEST: #{request.path}"
       @request = request
       @response = Shell::Response.new
       @redirect = nil
