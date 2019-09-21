@@ -30,7 +30,7 @@ module Artillery
         {
           method: (env.request.method || "").to_s,
           path: (env.request.path || "").to_s,
-          body: (env.request.body || IO::Memory.new).to_s,
+          body: (env.request.body.read || IO::Memory.new).to_s,
           query: (env.request.query || "").to_s
         }.to_json
         #de {% if Artillery::ARTILLERY_SHELL_HEADERS %}
