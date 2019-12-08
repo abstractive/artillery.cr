@@ -1,3 +1,6 @@
+# 0.0.1.14  2019-12-07 17:24 [ ECp4 ]
+* Crystal 0.31.1 support updates
+
 # 0.0.1.13  2019-12-07 16:25 [ ECp4 ]
 * Updating to use fork of zeromq-crystal
 

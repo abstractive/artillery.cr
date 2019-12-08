@@ -13,7 +13,7 @@ module Artillery
       def initialize(env)
         @method = (env["method"] || "").to_s
         @path = (env["path"] || "").to_s
-        @body = (env["body"].gets_to_end || IO::Memory.new).to_s
+        @body = (env["body"] || IO::Memory.new).to_s
         @query = (env["query"] || "").to_s
         @index = "#{@method}#{@path}"
         #de {% if Artillery::ARTILLERY_SHELL_HEADERS %}
@@ -30,7 +30,7 @@ module Artillery
         {
           method: (env.request.method || "").to_s,
           path: (env.request.path || "").to_s,
-          body: (env.request.body.gets_to_end || IO::Memory.new).to_s,
+          body: (( (b = env.request.body) && b.gets_to_end ) || IO::Memory.new).to_s,
           query: (env.request.query || "").to_s
         }.to_json
         #de {% if Artillery::ARTILLERY_SHELL_HEADERS %}
