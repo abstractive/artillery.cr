@@ -9,7 +9,7 @@ module Artillery
     end
 
     def timestamp
-      Time.now.to_s("%Y-%m-%d %H:%M:%S.%L")
+      Time.local.to_s("%Y-%m-%d %H:%M:%S.%L")
     end
 
   end

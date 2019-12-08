@@ -1,4 +1,7 @@
-# 0.0.1.14  2019-12-07 17:24 [ ECp4 ]
+# 0.0.1.16  2019-12-08 09:12 [ UDp5 ]
+* Fix linefeeds on bin/* files, and do not send a default public/ directory from bin/artillery script
+
+# 0.0.1.15  2019-12-07 18:57 [ ECp4 ]
 * Pull public directory from artillery.yml
 
 # 0.0.1.14  2019-12-07 17:24 [ ECp4 ]

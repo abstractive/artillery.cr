@@ -24,6 +24,6 @@ dependencies:
 
 targets:
   artillery-mountpoint:
-    main: src/artillery/run/mountpoint.cr
+    main: src/artillery/processes/mountpoint.cr
   artillery-launcher:
-    main: src/artillery/run/launcher.cr
+    main: src/artillery/processes/launcher.cr
