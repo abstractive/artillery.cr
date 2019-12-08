@@ -36,6 +36,7 @@ if [[ $KILLALL -eq 1 ]]; then
   exit
 fi
 
+hasArgument   "--clear" $@;         CLEAR=$?
 hasArgument   "--bazooka" $@;       BAZOOKA=$?
 hasArgument   "--update" $@;        UPDATE=$?
 hasArgument   "--debug" $@;         DEBUG=$?
@@ -44,6 +45,12 @@ hasParameter  "--ip=" $@;           HAS_INTERFACE=$?
 hasParameter  "--zeromq=" $@;       HAS_ZEROMQ_URL=$?
 hasParameter  "--port-zeromq=" $@;  HAS_PORT_ZEROMQ=$?
 hasParameter  "--port-http=" $@;    HAS_PORT_HTTP=$?
+
+if [[ $CLEAR -eq 1 ]]; then
+  log "Clearing Crystal environment..."
+  killall -9 crystal-run-eval.tmp
+  rm ~/.cache/crystal
+fi
 
 if [[ $HAS_INTERFACE -eq 1 ]]; then
   export ARTILLERY_EXPOSED_INTERFACE=$(getParameter "--ip=" $@)

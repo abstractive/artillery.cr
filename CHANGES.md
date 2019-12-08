@@ -1,3 +1,6 @@
+# 0.0.1.17  2019-12-08 09:30 [ UDp5 ]
+* --clear option to reset Crystal environment under `eval` handling
+
 # 0.0.1.16  2019-12-08 09:12 [ UDp5 ]
 * Fix linefeeds on bin/* files, and do not send a default public/ directory from bin/artillery script
 
