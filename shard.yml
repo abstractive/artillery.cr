@@ -1,12 +1,12 @@
 name: artillery
-version: 0.0.1.12
+version: 0.0.1.13
 
 description: Serverfree object-oriented microservice architecture.
 
 authors:
   - digitalextremist <code@extremist.digital>
 
-crystal: 0.28.0
+crystal: 0.31.1
 
 executables:
   - artillery
@@ -18,7 +18,7 @@ github: abstractive/artillery.cr
 
 dependencies:
   zeromq:
-    github: crystal-community/zeromq-crystal
+    github: digitalextremist/zeromq-crystal
   kemal:
     github: kemalcr/kemal
 
