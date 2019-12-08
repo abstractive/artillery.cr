@@ -1,4 +1,7 @@
 # 0.0.1.14  2019-12-07 17:24 [ ECp4 ]
+* Pull public directory from artillery.yml
+
+# 0.0.1.14  2019-12-07 17:24 [ ECp4 ]
 * Crystal 0.31.1 support updates
 
 # 0.0.1.13  2019-12-07 16:25 [ ECp4 ]

@@ -70,6 +70,10 @@ module Artillery
       end
     end
 
+    if @@yaml["public"]?
+      @@public_directory = @@yaml["public"].to_s
+    end
+
   end
 
   #de Command-line Environment Variables:
