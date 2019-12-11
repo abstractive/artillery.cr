@@ -92,7 +92,10 @@ fi
 
 PROJECTILE="`pwd`"
 #de export ARTILLERY_PUBLIC=$PROJECTILE/public
-export ARTILLERY_SHOTS=$PROJECTILE/shots
+if [ -z ${ARTILLERY_SHOTS+x} ];
+then
+  export ARTILLERY_SHOTS=$PROJECTILE/shots
+fi
 working_directory=$PROJECTILE
 export ARTILLERY_CALLSITE=$PROJECTILE
 
@@ -119,9 +122,12 @@ if [ -d $ARTILLERY_SHOTS ]; then
   required_files=`echo -n $required_files | sed -r 's/[=]+/ /g' | sed -r 's/[;]+/\\n/g'`
 fi
 
-ARTILLERY_BASE="\"artillery\""
-if [[ -d "$(pwd)/src/artillery" ]]; then
-  ARTILLERY_BASE="\"./src/artillery.cr\""
+if [ -z ${ARTILLERY_BASE+x} ];
+then
+  ARTILLERY_BASE="\"artillery\""
+  if [[ -d "$(pwd)/src/artillery" ]]; then
+    ARTILLERY_BASE="\"./src/artillery.cr\""
+  fi
 fi
 
 if [[ $DEBUG -eq 1 ]]; then

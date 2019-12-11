@@ -1,3 +1,6 @@
+# 0.0.1.18  2019-12-10 18:25 [ 1Gg7 ]
+* Allow override of shots location and base require ( allows for `Stellar` control of `Artillery` )
+
 # 0.0.1.17  2019-12-08 09:30 [ UDp5 ]
 * --clear option to reset Crystal environment under `eval` handling
 
