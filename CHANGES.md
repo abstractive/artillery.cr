@@ -1,3 +1,6 @@
+# v201912102339-1Gg7 0.0.1.20
+* Fix --clear behavior
+
 # v201912101938-1Gg7 0.0.1.19
 * Change method of overriding shots/ so that Artillery can still filter its paths properly
 

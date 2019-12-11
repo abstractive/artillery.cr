@@ -48,8 +48,11 @@ hasParameter  "--port-http=" $@;    HAS_PORT_HTTP=$?
 
 if [[ $CLEAR -eq 1 ]]; then
   log "Clearing Crystal environment..."
-  killall -9 crystal-run-eval.tmp
-  rm ~/.cache/crystal
+  killall -9 crystal-run-eval.tmp 2> /dev/null
+  cache=`crystal env CRYSTAL_CACHE_DIR`
+  if [ -n ${cache} ]; then
+    rm -rf $cache
+  fi
 fi
 
 if [[ $HAS_INTERFACE -eq 1 ]]; then
