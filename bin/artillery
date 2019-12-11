@@ -92,10 +92,12 @@ fi
 
 PROJECTILE="`pwd`"
 #de export ARTILLERY_PUBLIC=$PROJECTILE/public
-if [ -z ${ARTILLERY_SHOTS+x} ];
+if [ -z ${ARTILLERY_SHOTS_DIRECTORY+x} ];
 then
-  export ARTILLERY_SHOTS=$PROJECTILE/shots
+  export ARTILLERY_SHOTS_DIRECTORY="shots"
 fi
+export ARTILLERY_SHOTS=$PROJECTILE/$ARTILLERY_SHOTS_DIRECTORY
+
 working_directory=$PROJECTILE
 export ARTILLERY_CALLSITE=$PROJECTILE
 
@@ -115,7 +117,7 @@ if [ -d $ARTILLERY_SHOTS ]; then
   for line in $(find $ARTILLERY_SHOTS -name "*.cr"); do
     cleaned=${line#"$PROJECTILE"}
     merged="$offset_directory$cleaned"
-    cleaned="${merged/shots\/shots/shots}"
+    cleaned="${merged/$ARTILLERY_SHOTS_DIRECTORY\/$ARTILLERY_SHOTS_DIRECTORY/$ARTILLERY_SHOTS_DIRECTORY}"
     REQUIRED+=("require=\".$cleaned\";")
   done
   required_files=$(join ${REQUIRED[@]})
