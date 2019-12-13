@@ -1,3 +1,6 @@
+# v201912131216-4Kg1 0.0.1.26
+* Add secrets.yml handling, and for now use git-secret to store in repository
+
 # v201912131050-4Kg1 0.0.1.24
 * Allow override of configuration file name
 * Pass content-type as `request.format` and pass JSON body as `request.data`

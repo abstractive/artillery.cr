@@ -15,21 +15,32 @@ module Artillery
   @@mountpoint_port_zeromq = uninitialized String
   @@mountpoint_port_http = uninitialized String
 
-  CONFIGURATION = ENV["ARTILLERY_CONFIGURATION"] ||= "artillery.yml"
+  FILE_CONFIGURATION = ENV["ARTILLERY_CONFIGURATION"] ||= "artillery.yml"
+  FILE_SECRETS = ENV["ARTILLERY_SECRETS"] ||= "secrets.yml"
 
   @@public_directory = "./public"
   @@mountpoint_interface = "0.0.0.0"
   @@mountpoint_port_zeromq = "4000"
   @@mountpoint_port_http = "3000"
 
-  @@config = "#{CALLSITE}/#{CONFIGURATION}"
+  @@path_configuration = "#{CALLSITE}/#{FILE_CONFIGURATION}"
+  @@path_secrets = "#{CALLSITE}/#{FILE_SECRETS}"
 
   @@yaml = uninitialized YAML::Any
   @@env = uninitialized YAML::Any
+  @@secrets = uninitialized YAML::Any
 
-  #de YAML if available:
-  if File.exists?(@@config)
-    @@yaml = File.open(@@config) do |file|
+  #de YAML if available:  if File.exists?(@@path_configuration)
+  SECRETS = if File.exists?(@@path_configuration)
+    @@secrets = File.open(@@path_secrets) do |file|
+      YAML.parse(file)
+    end
+  else
+    YAML::Any.new
+  end
+
+  if File.exists?(@@path_configuration)
+    @@yaml = File.open(@@path_configuration) do |file|
       YAML.parse(file)
     end
 
