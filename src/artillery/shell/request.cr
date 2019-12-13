@@ -9,9 +9,8 @@ module Artillery
       #de property query : String
       property body : String
       property format : String
-
       property json : Bool?
-      property data : JSON::Any?
+      property data : Hash(String, JSON::Any)?
 
       def initialize(env)
         @method = (env["method"] || "").to_s
@@ -33,7 +32,7 @@ module Artillery
       def data
         return nil unless json?
         return @data if @data
-        @data = JSON.parse(@body)
+        @data = JSON.parse(@body).as_h
       rescue
         nil
       end
