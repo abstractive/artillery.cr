@@ -1,4 +1,4 @@
-# v201912131407-4Kg1 0.0.1.26
+# v201912131407-4Kg1 0.0.1.27
 * Fix YAML initialization on empty secrets.
 
 # v201912131216-4Kg1 0.0.1.26
