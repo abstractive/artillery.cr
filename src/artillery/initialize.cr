@@ -5,9 +5,11 @@ module Artillery
   #de 2. artillery.yml
   #de 3. Defaults
 
-  @@environment = "development"
   ENVIRONMENT = ENV["ARTILLERY_ENVIRONMENT"] ||= @@environment
   CALLSITE = (ENV["ARTILLERY_CALLSITE"] ||= `pwd`).chomp
+  unless self.has_constant? :CONFIGURATION
+    CONFIGURATION = (ENV["ARTILLERY_CONFIGURATION"] ||= "artillery.yml")
+  end
 
   #de Defaults:
   @@yaml = uninitialized YAML::Any
@@ -21,7 +23,7 @@ module Artillery
   @@mountpoint_port_zeromq = "4000"
   @@mountpoint_port_http = "3000"
 
-  @@config = "#{CALLSITE}/artillery.yml"
+  @@config = "#{CALLSITE}/#{CONFIGURATION}"
 
   @@yaml = uninitialized YAML::Any
   @@env = uninitialized YAML::Any
@@ -82,10 +84,10 @@ module Artillery
   MOUNTPOINT_INTERFACE = ENV["ARTILLERY_EXPOSED_INTERFACE"] ||= @@mountpoint_interface
   MOUNTPOINT_PORT_ZEROMQ = ENV["ARTILLERY_PORT_ZEROMQ"] ||= @@mountpoint_port_zeromq
   MOUNTPOINT_PORT_HTTP = ENV["ARTILLERY_PORT_HTTP"] ||= @@mountpoint_port_http
-
   MOUNTPOINT_LOCATION = ENV["ARTILLERY_ZEROMQ_URL"] ||= "tcp://#{MOUNTPOINT_INTERFACE}:#{MOUNTPOINT_PORT_ZEROMQ}"
 
   HTTP_METHODS = %w(get post put patch delete options)
   USE_SHELL_HEADERS = ENV["ARTILLERY_SHELL_HEADERS"] ||= nil
   USE_SHOTS = ENV["ARTILLERY_SHOTS"] ||= nil
+
 end

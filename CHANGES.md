@@ -1,3 +1,7 @@
+# v201912131050-4Kg1 0.0.1.22
+* Allow override of configuration file name
+* Pass content-type as `request.format` and pass JSON body as `request.data`
+
 # v201912102339-1Gg7 0.0.1.20
 * Fix --clear behavior
 
