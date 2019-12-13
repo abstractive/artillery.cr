@@ -36,7 +36,7 @@ module Artillery
       YAML.parse(file)
     end
   else
-    YAML::Any.new
+    YAML.parse("")
   end
 
   if File.exists?(@@path_configuration)

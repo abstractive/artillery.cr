@@ -1,3 +1,6 @@
+# v201912131407-4Kg1 0.0.1.26
+* Fix YAML initialization on empty secrets.
+
 # v201912131216-4Kg1 0.0.1.26
 * Add secrets.yml handling, and for now use git-secret to store in repository
 

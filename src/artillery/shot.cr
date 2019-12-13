@@ -38,7 +38,6 @@ module Artillery
       end
     {% end %}
 
-
     def header(
         key : String,
         value : String
