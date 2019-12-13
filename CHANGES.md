@@ -1,4 +1,4 @@
-# v201912131050-4Kg1 0.0.1.23
+# v201912131050-4Kg1 0.0.1.24
 * Allow override of configuration file name
 * Pass content-type as `request.format` and pass JSON body as `request.data`
 

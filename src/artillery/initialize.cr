@@ -5,11 +5,8 @@ module Artillery
   #de 2. artillery.yml
   #de 3. Defaults
 
-  ENVIRONMENT = ENV["ARTILLERY_ENVIRONMENT"] ||= @@environment
+  ENVIRONMENT = ENV["ARTILLERY_ENVIRONMENT"] ||= "development"
   CALLSITE = (ENV["ARTILLERY_CALLSITE"] ||= `pwd`).chomp
-  unless self.has_constant? :CONFIGURATION
-    CONFIGURATION = (ENV["ARTILLERY_CONFIGURATION"] ||= "artillery.yml")
-  end
 
   #de Defaults:
   @@yaml = uninitialized YAML::Any
@@ -17,6 +14,8 @@ module Artillery
   @@mountpoint_interface = uninitialized String
   @@mountpoint_port_zeromq = uninitialized String
   @@mountpoint_port_http = uninitialized String
+
+  CONFIGURATION = ENV["ARTILLERY_CONFIGURATION"] ||= "artillery.yml"
 
   @@public_directory = "./public"
   @@mountpoint_interface = "0.0.0.0"
