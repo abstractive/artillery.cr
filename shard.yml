@@ -1,5 +1,5 @@
 name: artillery
-version: 0.0.1.30
+version: 0.0.1.31
 
 description: Serverfree object-oriented microservice architecture.
 
@@ -11,6 +11,7 @@ crystal: 0.31.1
 executables:
   - artillery
   - bazooka
+  - artillery-mountpoint
 
 license: MIT
 

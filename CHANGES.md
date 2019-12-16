@@ -1,3 +1,6 @@
+# v201912160309-6Mg3 0.0.1.31
+* Allow passing Hash to Artillery::Shot#success which automatically converts to JSON
+
 # v201912160106-6Mg3 0.0.1.30
 * Revamped Artillery::Shell::Request, especially Payload type and handling
 * Setup proper target for artillery-mountpoint to begin using out of bazooka mode
