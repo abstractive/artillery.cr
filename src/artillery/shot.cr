@@ -45,11 +45,6 @@ module Artillery
       @response.add(key, value)
     end
 
-    def success(body : String?)
-      @response.status = 200
-      @response.body = body unless body.nil?
-    end
-
     alias ResponseHash = Hash(String, Char |
                                       String |
                                       Bool |
@@ -63,6 +58,11 @@ module Artillery
     def success(body : ResponseHash)
       @response.status = 200
       @response.body = body.to_json
+    end
+
+    def success(body : String?)
+      @response.status = 200
+      @response.body = body unless body.nil?
     end
 
     def redirect(@redirect)

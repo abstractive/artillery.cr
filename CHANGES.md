@@ -1,4 +1,4 @@
-# v201912160309-6Mg3 0.0.1.31
+# v201912160338-6Mg3 0.0.1.32
 * Allow passing Hash to Artillery::Shot#success which automatically converts to JSON
 
 # v201912160106-6Mg3 0.0.1.30
