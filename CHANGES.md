@@ -1,3 +1,6 @@
+# v201912161223-7Ng4 0.0.1.33
+* Remove `artillery-mountpoint` from `executables:` in `shard.yml`
+
 # v201912160338-6Mg3 0.0.1.32
 * Allow passing Hash to Artillery::Shot#success which automatically converts to JSON
 
