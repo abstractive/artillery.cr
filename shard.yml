@@ -1,5 +1,5 @@
 name: artillery
-version: 0.0.1.27
+version: 0.0.1.30
 
 description: Serverfree object-oriented microservice architecture.
 
@@ -24,6 +24,6 @@ dependencies:
 
 targets:
   artillery-mountpoint:
-    main: src/artillery/processes/artillery-mountpoint.cr
+    main: src/processes/artillery-mountpoint.cr
 #de  artillery-launcher:
-#de    main: src/artillery/processes/artillery-launcher.cr
+#de    main: src/processes/artillery-launcher.cr

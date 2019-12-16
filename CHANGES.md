@@ -1,3 +1,7 @@
+# v201912160106-6Mg3 0.0.1.30
+* Revamped Artillery::Shell::Request, especially Payload type and handling
+* Setup proper target for artillery-mountpoint to begin using out of bazooka mode
+
 # v201912131407-4Kg1 0.0.1.27
 * Fix YAML initialization on empty secrets.
 

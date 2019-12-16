@@ -20,7 +20,6 @@ module Artillery
       @@server = @@context.socket(ZMQ::REQ)
       @@server.set_socket_option(ZMQ::LINGER, 0)
       @@server.bind(MOUNTPOINT_LOCATION)
-      log "Started", "Artillery::Mountpoint"
     end
 
     def self.reset
@@ -49,6 +48,7 @@ module Artillery
           end
         end
       {% end %}
+      log "Started // 0MQ: #{MOUNTPOINT_LOCATION} HTTP@#{MOUNTPOINT_PORT_HTTP}", "Artillery::Mountpoint"
       Kemal.run
     end
 

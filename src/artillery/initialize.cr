@@ -15,6 +15,10 @@ module Artillery
   @@mountpoint_port_zeromq = uninitialized String
   @@mountpoint_port_http = uninitialized String
 
+  def self.configuration
+    @@yaml
+  end
+
   FILE_CONFIGURATION = ENV["ARTILLERY_CONFIGURATION"] ||= "artillery.yml"
   FILE_SECRETS = ENV["ARTILLERY_SECRETS"] ||= "secrets.yml"
 
@@ -85,7 +89,6 @@ module Artillery
     if @@yaml["public"]?
       @@public_directory = @@yaml["public"].to_s
     end
-
   end
 
   #de Command-line Environment Variables:
