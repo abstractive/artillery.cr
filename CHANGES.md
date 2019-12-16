@@ -1,3 +1,6 @@
+# v201912161253-7Ng4 0.0.1.34
+* Update "starting" log entry from `Artillery::Launcher` to show the mountpoint tuned to.
+
 # v201912161223-7Ng4 0.0.1.33
 * Remove `artillery-mountpoint` from `executables:` in `shard.yml`
 

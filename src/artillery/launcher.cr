@@ -33,7 +33,7 @@ module Artillery
       @@client = @@context.socket(ZMQ::REP)
       @@client.connect(MOUNTPOINT_LOCATION)
       @@client.set_socket_option(ZMQ::LINGER, 0)
-      log "Started", "Artillery::Launcher"
+      log "Started // 0MQ: #{MOUNTPOINT_LOCATION}", "Artillery::Launcher"
     end
 
     def self.reset
