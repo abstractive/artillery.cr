@@ -3,9 +3,11 @@ require "../artillery"
 require "../artillery/overrides/kemal"
 
 Kemal.config.host_binding = Artillery::MOUNTPOINT_INTERFACE
-Kemal.config.public_folder = Artillery::PUBLIC_DIRECTORY
 Kemal.config.port = Int32.new(Artillery::MOUNTPOINT_PORT_HTTP)
 Kemal.config.shutdown_message = false
+
+#de Can likely remove; provided by nginx
+Kemal.config.public_folder = Artillery::PUBLIC_DIRECTORY
 
 module Artillery
   class Mountpoint
