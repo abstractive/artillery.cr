@@ -23,6 +23,7 @@ module Artillery
   FILE_SECRETS = ENV["ARTILLERY_SECRETS"] ||= "secrets.yml"
 
   @@public_directory = "./public"
+
   @@mountpoint_interface = "0.0.0.0"
   @@mountpoint_port_zeromq = "4000"
   @@mountpoint_port_http = "3000"
@@ -93,6 +94,8 @@ module Artillery
 
   #de Command-line Environment Variables:
   PUBLIC_DIRECTORY = ENV["ARTILLERY_PUBLIC"] ||= @@public_directory
+
+  SOCKET_TIMEOUT = 1500
 
   MOUNTPOINT_INTERFACE = ENV["ARTILLERY_EXPOSED_INTERFACE"] ||= @@mountpoint_interface
   MOUNTPOINT_PORT_ZEROMQ = ENV["ARTILLERY_PORT_ZEROMQ"] ||= @@mountpoint_port_zeromq

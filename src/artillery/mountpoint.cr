@@ -12,26 +12,28 @@ Kemal.config.public_folder = Artillery::PUBLIC_DIRECTORY
 module Artillery
   class Mountpoint
 
+    extend self
     extend Logger
 
     @@context = uninitialized ZMQ::Context
     @@server = uninitialized ZMQ::Socket
 
-    def self.start
+    def start
       @@context = ZMQ::Context.new
       @@server = @@context.socket(ZMQ::REQ)
       @@server.set_socket_option(ZMQ::LINGER, 0)
+      @@server.set_socket_option(ZMQ::RCVTIMEO, SOCKET_TIMEOUT)
       @@server.bind(MOUNTPOINT_LOCATION)
     end
 
-    def self.reset
+    def reset
       @@server.close
       log "Reset"
       start
     rescue
     end
 
-    def self.run
+    def run
       start
       {% for method in HTTP_METHODS %}
         Kemal::RouteHandler::INSTANCE.add_route({{method.upcase}}, "/*") do |env|
