@@ -1,6 +1,7 @@
 module Artillery
   class Battery
-    class ServiceQuery
+    class Presence
+
 
     end
   end

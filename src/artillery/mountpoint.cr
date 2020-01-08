@@ -12,34 +12,37 @@ Kemal.config.public_folder = Artillery::PUBLIC_DIRECTORY
 module Artillery
   class Mountpoint
 
-    extend self
     extend Logger
 
-    @@context = uninitialized ZMQ::Context
-    @@server = uninitialized ZMQ::Socket
+    def self.run
+      new.engage
+    end
+
+    @context = uninitialized ZMQ::Context
+    @server = uninitialized ZMQ::Socket
 
     def start
-      @@context = ZMQ::Context.new
-      @@server = @@context.socket(ZMQ::REQ)
-      @@server.set_socket_option(ZMQ::LINGER, 0)
-      @@server.set_socket_option(ZMQ::RCVTIMEO, SOCKET_TIMEOUT)
-      @@server.bind(MOUNTPOINT_LOCATION)
+      @context = ZMQ::Context.new
+      @server = @context.socket(ZMQ::REQ)
+      @server.set_socket_option(ZMQ::LINGER, 0)
+      @server.set_socket_option(ZMQ::RCVTIMEO, SOCKET_TIMEOUT)
+      @server.bind(MOUNTPOINT_LOCATION)
     end
 
     def reset
-      @@server.close
+      @server.close
       log "Reset"
       start
     rescue
     end
 
-    def run
+    def engage
       start
       {% for method in HTTP_METHODS %}
         Kemal::RouteHandler::INSTANCE.add_route({{method.upcase}}, "/*") do |env|
           begin
-            @@server.send_string(Artillery::Shell::Request.as_json_from_context(env))
-            response = JSON.parse(@@server.receive_string) #de Directly output to socket.
+            @server.send_string(Artillery::Shell::Request.as_json_from_context(env))
+            response = JSON.parse(@server.receive_string) #de Directly output to socket.
             if response["redirect"]?
               env.redirect "#{response["redirect"]}"
             else

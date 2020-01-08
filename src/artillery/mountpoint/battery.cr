@@ -1,15 +1,23 @@
 require "../mountpoint"
+require "../../protocols/cannonry"
+
+#de Based on the example implementation of MDP:7 from ZMQ, by Tom van Leeuwen
+#de https://github.com/booksbyus/zguide/blob/master/examples/Ruby/mdbroker.rb
+
+#de TODO: Convert to avoid `extend self` once the Shots are loaded.
 
 module Artillery
-  class Battery < Mountpoint
+  class Battery
 
-    VERSION = 'BTRY01'
+    extend self
+    extend Mountpoint
+    include Protocol
 
     @@presences = uninitialized Hash
     @@workers = uninitialized Hash
     @@waiting = uninitialized Hash
 
-    def self.start
+    def start
       @@context = ZMQ::Context.new
       @@server = @@context.socket(ZMQ::ROUTER)
       @@server.set_socket_option(ZMQ::LINGER, 0)
@@ -17,8 +25,8 @@ module Artillery
       @@server.bind(MOUNTPOINT_LOCATION)
     end
 
-    #de TODO: Convert to block form, and absorb into Mountpoint, then customize here.
-    def self.run
+    #de TODO: Convert to block form, and absorb into Mountpoint, then customize here?
+    def run
       start
       {% for method in HTTP_METHODS %}
         Kemal::RouteHandler::INSTANCE.add_route({{method.upcase}}, "/*") do |env|
@@ -41,51 +49,51 @@ module Artillery
       Kemal.run
     end
 
-    def self.shutdown
+    def shutdown
 
     end
 
-    def self.reset
+    def reset
 
     end
 
-    def self.close
+    def close
 
     end
 
-    def self.worker_register()
+    def worker_register()
 
     end
 
-    def self.worker_unregister()
+    def worker_unregister()
 
     end
 
-    def self.on_ready()
+    def on_ready()
 
     end
 
-    def self.on_reply()
+    def on_reply()
 
     end
 
-    def self.on_heartbeat()
+    def on_heartbeat()
       #de Implement
     end
 
-    def self.on_disconnect()
+    def on_disconnect()
 
     end
 
-    def self.worker_waiting()
+    def worker_waiting()
 
     end
 
-    def self.worker_disconnect_received()
+    def worker_disconnect_received()
 
     end
 
-    def self.worker_disconnect_send()
+    def worker_disconnect_send()
 
     end
 
