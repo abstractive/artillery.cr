@@ -3,41 +3,33 @@ require "../launcher"
 module Artillery
   class Bazooka < Launcher
 
-    def log(message)
-      super(message, "Artillery::Bazooka")
-    end
-
-    def self.run
-      new.start
-    end
-
-    @context = uninitialized ZMQ::Context
-    @worker = uninitialized ZMQ::Socket
-
     def initialize
       @context = ZMQ::Context.new
+      debug "Initialized"
     end
 
     def connect
-      shutdown if @worker
-      @worker = @context.socket(ZMQ::REP)
-      @worker.set_socket_option(ZMQ::LINGER, 0)
-      @worker.connect(MOUNTPOINT_LOCATION)
+      debug "Connecting"
+      @socket = @context.socket(ZMQ::REP)
+      @socket.set_socket_option(ZMQ::LINGER, 0)
+      @socket.connect(MOUNTPOINT_LOCATION)
     end
 
     def engage
       embattled do
-        shell = chamber(@worker.receive_string)
+        shell = chamber(@socket.receive_string)
+        debug "Request..."
         send(armed(shell))
       end
     end
 
     def send(message)
-      @worker.send_string(message)
+      debug "Responding..."
+      @socket.send_string(message)
     end
 
     def shutdown
-      @worker.close
+      @socket.close
     rescue
     end
 

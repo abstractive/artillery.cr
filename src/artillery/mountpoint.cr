@@ -1,48 +1,19 @@
-require "kemal"
 require "../artillery"
 require "../artillery/overrides/kemal"
 
-Kemal.config.host_binding = Artillery::MOUNTPOINT_INTERFACE
-Kemal.config.port = Int32.new(Artillery::MOUNTPOINT_PORT_HTTP)
-Kemal.config.shutdown_message = false
-
-#de Can likely remove; provided by nginx
-Kemal.config.public_folder = Artillery::PUBLIC_DIRECTORY
-
 module Artillery
-  abstract class Mountpoint
+  abstract class Mountpoint < Armament
 
-    extend Logger
-
-    def self.run
-      new.engage
+    def prepared(env)
+      Artillery::Shell::Request.as_json_from_context(env)
     end
 
-    @context = uninitialized ZMQ::Context
-    @server = uninitialized ZMQ::Socket
-
-    def start
-      @context = ZMQ::Context.new
-      @server = @context.socket(ZMQ::REQ)
-      @server.set_socket_option(ZMQ::LINGER, 0)
-      @server.set_socket_option(ZMQ::RCVTIMEO, SOCKET_TIMEOUT)
-      @server.bind(MOUNTPOINT_LOCATION)
-    end
-
-    def reset
-      @server.close
-      log "Reset"
-      start
-    rescue
-    end
-
-    def engage
-      start
+    def embattled(&block : HTTP::Server::Context -> JSON::Any)
+      handler = block
       {% for method in HTTP_METHODS %}
-        Kemal::RouteHandler::INSTANCE.add_route({{method.upcase}}, "/*") do |env|
+        ::Kemal::RouteHandler::INSTANCE.add_route({{method.upcase}}, "/*") do |env|
           begin
-            @server.send_string(Artillery::Shell::Request.as_json_from_context(env))
-            response = JSON.parse(@server.receive_string) #de Directly output to socket.
+            response = handler.call(env)
             if response["redirect"]?
               env.redirect "#{response["redirect"]}"
             else
@@ -50,13 +21,14 @@ module Artillery
               "#{response["body"]}"
             end
           rescue ex
-            log "#{ex.class.name}: #{ex.message}\n#{ex.backtrace.join('\n')}"
+            exception(ex)
             reset
           end
         end
       {% end %}
-      log "Started // 0MQ: #{MOUNTPOINT_LOCATION} HTTP@#{MOUNTPOINT_PORT_HTTP}", "Artillery::Mountpoint"
-      Kemal.run
+      word = "Engaging".colorize(:green).mode(:bold).to_s
+      log "#{word} // 0MQ: #{MOUNTPOINT_LOCATION} HTTP@#{MOUNTPOINT_PORT_HTTP}"
+      ::Kemal.run
     end
 
   end

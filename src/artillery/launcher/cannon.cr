@@ -12,7 +12,6 @@ module Artillery
     @poller : ZMQ::Poller
 
     @messages = uninitialized Array(String)
-    @heartbeat = uninitialized Time::Span
 
     @handling : String?
 
@@ -20,8 +19,9 @@ module Artillery
       unless PRESENCE_CODE
         raise Error::PresenceUndefined.new
       end
-      @context = ZMQ::Context.new(1)
+      @context = ZMQ::Context.new(LAUNCHER_THREADS)
       @poller = ZMQ::Poller.new
+      @poller.register_readable(@socket)
       debug "Initialized"
     end
 
@@ -30,17 +30,9 @@ module Artillery
       @socket = @context.socket(ZMQ::DEALER)
       @socket.set_socket_option(ZMQ::LINGER, 0)
       @socket.connect(MOUNTPOINT_LOCATION)
-      @poller.register_readable(@socket)
       send_ready
       reset_retries
       reset_heartbeat
-    end
-
-    private def handle(message)
-      debug "Received request."
-      shell = chamber(@socket.receive_string)
-      send_reply(armed(shell))
-      debug "Responded to request."
     end
 
     def engage
@@ -80,16 +72,37 @@ module Artillery
       end
     end
 
-    private def discard_frame
+    def shutdown
+      if @socket && !@socket.closed?
+        debug "Shutting down sockets."
+        send_disconnect
+        @socket.close
+        @poller.deregister_readable(@socket)
+      end
+    rescue ex
+      exception(ex)
+      #de raise(ex)
+    end
+
+    private
+
+    def handle(message)
+      debug "Received request."
+      shell = chamber(@socket.receive_string)
+      send_reply(armed(shell))
+      debug "Responded to request."
+    end
+
+    def discard_frame
       get_message
       return nil
     end
 
-    private def get_message
+    def get_message
       @messages.shift
     end
 
-    private def parse_messages
+    def parse_messages
       debug("Parsing messages.")
       @messages = @socket.receive_strings
       discard_frame
@@ -99,7 +112,7 @@ module Artillery
       return get_message
     end
 
-    private def send(command : String?, option : String? = nil, message : String? | Array? = nil)
+    def send(command : String?, option : String? = nil, message : String? | Array? = nil)
       if message.nil?
         message = [] of String
       elsif message.is_a?(String)
@@ -112,58 +125,37 @@ module Artillery
       @socket.send_strings(message)
     end
 
-    private def finished!
+    def finished!
       @handling = nil
       @messages = uninitialized Array(String)
     end
 
-    private def responding!
+    def responding!
       @handling = get_message
       discard_frame
     end
 
-    private def send_reply(message)
+    def send_reply(message)
       send(Cannonry::Worker::REPLY, @handling, message)
     end
 
-    private def send_ready
+    def send_ready
       send(Cannonry::Worker::READY, PRESENCE_CODE)
       debug "Sent READY to Battery"
     end
 
-    def next_heartbeat?
-      debug "Check if time for HEARTBEAT? #{( Time.monotonic - @heartbeat ) > Cannonry::Timing::HEARTBEAT}"
-      ( Time.monotonic - @heartbeat ) > Cannonry::Timing::HEARTBEAT
-    end
-
-    private def send_heartbeat
+    def send_heartbeat
       send(Cannonry::Worker::HEARTBEAT)
       debug "Sent HEARTBEAT to Battery"
     end
 
-    private def send_disconnect
+    def send_disconnect
       send(Cannonry::Worker::DISCONNECT)
       debug "Sent DISCONNECT to Battery"
     end
 
-    private def reset_heartbeat
-      @heartbeat = Time.monotonic
-    end
-
-    private def reset_retries
+    def reset_retries
       @retries = Cannonry::RETRIES
-    end
-
-    def shutdown
-      if @socket && !@socket.closed?
-        debug "Shutting down sockets."
-        send_disconnect
-        @socket.close
-        @poller.deregister_readable(@socket)
-      end
-    rescue ex
-      exception(ex)
-      #de raise(ex)
     end
 
   end

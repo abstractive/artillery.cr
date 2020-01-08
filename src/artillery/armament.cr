@@ -6,6 +6,7 @@ module Artillery
     @context = uninitialized ZMQ::Context
     @socket = uninitialized ZMQ::Socket
 
+    @heartbeat = uninitialized Time::Span
     @running = uninitialized Bool
 
     def self.run
@@ -39,6 +40,15 @@ module Artillery
       shutdown
       log "Reset 0MQ connection."
       connect
+    end
+
+    def next_heartbeat?
+      debug "Check if time for HEARTBEAT? #{( Time.monotonic - @heartbeat ) > Cannonry::Timing::HEARTBEAT}"
+      ( Time.monotonic - @heartbeat ) > Cannonry::Timing::HEARTBEAT
+    end
+
+    def reset_heartbeat
+      @heartbeat = Time.monotonic
     end
 
   end

@@ -8,6 +8,9 @@ module Artillery
   ENVIRONMENT = ENV["ARTILLERY_ENVIRONMENT"] ||= "development"
   CALLSITE = (ENV["ARTILLERY_CALLSITE"] ||= `pwd`).chomp
 
+  MOUNTPOINT_THREADS = 4
+  LAUNCHER_THREADS = 2
+
   #de Defaults:
   @@yaml = uninitialized YAML::Any
   @@presence_code = uninitialized String?
@@ -38,13 +41,15 @@ module Artillery
   @@secrets = uninitialized YAML::Any
 
   #de YAML if available:  if File.exists?(@@path_configuration)
-  SECRETS = if File.exists?(@@path_configuration)
+  SECRETS = if File.exists?(@@path_secrets)
     @@secrets = File.open(@@path_secrets) do |file|
       YAML.parse(file)
     end
   else
     YAML.parse("")
   end
+
+  Logger.debug("Config? #{@@path_configuration}", "Artillery")
 
   if File.exists?(@@path_configuration)
     @@yaml = File.open(@@path_configuration) do |file|
@@ -57,10 +62,6 @@ module Artillery
 
     #de Allow keys to be set at the top level, or in environments.
     #de The environment value ought to override the top level if both are present.
-
-    if @@yaml["presence"]?
-      @@presence_code = @@yaml["presence"].to_s
-    end
     
     if @@yaml["interface"]?
       @@mountpoint_interface = @@yaml["interface"].to_s
@@ -105,8 +106,8 @@ module Artillery
   #de TODO: Validate these values!
 
   #de Command-line Environment Variables:
-  PRESENCE_CODE = ENV["ARTILLERY_PRESENCE"] ||= @@presence_code ||= nil
   PUBLIC_DIRECTORY = ENV["ARTILLERY_PUBLIC"] ||= @@public_directory
+  PRESENCE_CODE = PRESENCE["code"]?
 
   SOCKET_TIMEOUT = 1500
 
