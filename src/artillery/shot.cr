@@ -12,7 +12,7 @@ module Artillery
     macro inherited
       #de puts "INHERETED: #{self}"
       #de Must have vectors
-      #de Artillery::Launcher.attach "#{self}"
+      #de Armory.attach "#{self}"
     end
 
     def self.attached
@@ -77,7 +77,7 @@ module Artillery
     end
 
     def self.vector(path : String)
-      Artillery::Launcher.load({
+      Armory.load({
         redirect: nil,
         method: :get,
         path: path,
@@ -86,7 +86,7 @@ module Artillery
     end
 
     def self.vector(method : Symbol, path : String)
-      Artillery::Launcher.load({
+      Armory.load({
         redirect: nil,
         method: method,
         path: path,
@@ -95,7 +95,7 @@ module Artillery
     end
 
     def self.vector(method : Symbol, path : String, execute : Symbol)
-      Artillery::Launcher.load({
+      Armory.load({
         redirect: nil,
         method: method,
         path: path,

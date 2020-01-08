@@ -1,12 +1,11 @@
 module Artillery
-  module Protocols
+  module Protocol
     module Cannonry
       RETRIES         = 3
       module Timing
         HEARTBEAT     = 3.seconds
-        RECONNECT     = 3.seconds
-        WAIT_LISTEN   = 2 #de Seconds
-        WAIT_RETRY    = 1 #de Seconds
+        WAIT_LISTEN   = 2600 #de Milliseconds
+        WAIT_RETRY    = 1.second
       end
       module Worker
         VERSION       = "ABCP01" #de Artillery Battery Cannon Presence

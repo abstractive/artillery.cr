@@ -1,3 +1,3 @@
-require "../artillery/battery"
+require "../artillery/mountpoint/battery"
 
 Artillery::Battery.run

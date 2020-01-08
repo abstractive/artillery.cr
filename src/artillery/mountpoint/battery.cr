@@ -1,5 +1,5 @@
 require "../mountpoint"
-require "../../protocols/cannonry"
+require "../protocols/cannonry"
 
 #de Based on the example implementation of MDP:7 from ZMQ, by Tom van Leeuwen
 #de https://github.com/booksbyus/zguide/blob/master/examples/Ruby/mdbroker.rb
@@ -12,6 +12,10 @@ module Artillery
     extend self
     extend Mountpoint
     include Protocol
+
+    def log(message)
+      super(message, "Artillery::Battery")
+    end
 
     @@presences = uninitialized Hash
     @@workers = uninitialized Hash

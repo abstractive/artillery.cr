@@ -10,7 +10,7 @@ module Artillery
 
   #de Defaults:
   @@yaml = uninitialized YAML::Any
-  @@presence = uninitialized String
+  @@presence_code = uninitialized String?
   @@public_directory = uninitialized String
 
   @@mountpoint_interface = uninitialized String
@@ -59,7 +59,7 @@ module Artillery
     #de The environment value ought to override the top level if both are present.
 
     if @@yaml["presence"]?
-      @@presence = @@yaml["presence"].to_s
+      @@presence_code = @@yaml["presence"].to_s
     end
     
     if @@yaml["interface"]?
@@ -105,7 +105,7 @@ module Artillery
   #de TODO: Validate these values!
 
   #de Command-line Environment Variables:
-  PRESENCE = ENV["ARTILLERY_PRESENCE"] ||= @@presence ||= nil
+  PRESENCE_CODE = ENV["ARTILLERY_PRESENCE"] ||= @@presence_code ||= nil
   PUBLIC_DIRECTORY = ENV["ARTILLERY_PUBLIC"] ||= @@public_directory
 
   SOCKET_TIMEOUT = 1500

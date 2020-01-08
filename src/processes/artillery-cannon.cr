@@ -1,3 +1,3 @@
-require "../artillery/mountpoint/battery"
+require "../artillery/launcher/cannon"
 
-Artillery::Battery.run
+Artillery::Cannon.run

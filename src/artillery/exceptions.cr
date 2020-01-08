@@ -4,7 +4,7 @@ module Artillery
     module Invalid
       class MessageFormat < Exception; end
       class ProtocolVersion < Exception; end
-      class CommandRecieved < Exception; end
+      class CommandReceived < Exception; end
     end
   end
 end

@@ -10,7 +10,7 @@ Kemal.config.shutdown_message = false
 Kemal.config.public_folder = Artillery::PUBLIC_DIRECTORY
 
 module Artillery
-  class Mountpoint
+  abstract class Mountpoint
 
     extend Logger
 
