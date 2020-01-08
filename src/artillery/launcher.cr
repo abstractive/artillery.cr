@@ -32,8 +32,8 @@ module Artillery
     def start
       @@context = ZMQ::Context.new
       @@worker = @@context.socket(ZMQ::REP)
-      @@worker.connect(MOUNTPOINT_LOCATION)
       @@worker.set_socket_option(ZMQ::LINGER, 0)
+      @@worker.connect(MOUNTPOINT_LOCATION)
       log "Started // 0MQ: #{MOUNTPOINT_LOCATION}", "Artillery::Launcher"
     end
 
