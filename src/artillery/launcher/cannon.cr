@@ -9,10 +9,6 @@ module Artillery
 
     include Protocol
 
-    def self.run
-      new.start
-    end
-
     @poller : ZMQ::Poller
 
     @messages = uninitialized Array(String)
@@ -40,7 +36,7 @@ module Artillery
       reset_heartbeat
     end
 
-    def handle(message)
+    private def handle(message)
       debug "Received request."
       shell = chamber(@socket.receive_string)
       send_reply(armed(shell))
@@ -60,6 +56,7 @@ module Artillery
             responding!
             discard_frame
             handle(get_message)
+            finished!
           when Cannonry::Worker::HEARTBEAT
             #de TODO: Have Cannons monitor Battery in future?
             debug "Received HEARTBEAT from Battery"
@@ -83,16 +80,16 @@ module Artillery
       end
     end
 
-    def discard_frame
+    private def discard_frame
       get_message
       return nil
     end
 
-    def get_message
+    private def get_message
       @messages.shift
     end
 
-    def parse_messages
+    private def parse_messages
       debug("Parsing messages.")
       @messages = @socket.receive_strings
       discard_frame
@@ -102,7 +99,7 @@ module Artillery
       return get_message
     end
 
-    def send(command : String?, option : String? = nil, message : String? | Array? = nil)
+    private def send(command : String?, option : String? = nil, message : String? | Array? = nil)
       if message.nil?
         message = [] of String
       elsif message.is_a?(String)
@@ -115,50 +112,54 @@ module Artillery
       @socket.send_strings(message)
     end
 
-    def finished
+    private def finished!
       @handling = nil
       @messages = uninitialized Array(String)
     end
 
-    def responding!
+    private def responding!
       @handling = get_message
       discard_frame
     end
 
-    def send_reply(message)
+    private def send_reply(message)
       send(Cannonry::Worker::REPLY, @handling, message)
     end
 
-    def send_ready
+    private def send_ready
       send(Cannonry::Worker::READY, PRESENCE_CODE)
       debug "Sent READY to Battery"
     end
 
     def next_heartbeat?
-      debug "Check if time for HEARTBEAT?"
-      debug "#{( Time.monotonic - @heartbeat )} > #{Cannonry::Timing::HEARTBEAT}"
-      debug "#{( Time.monotonic - @heartbeat ) > Cannonry::Timing::HEARTBEAT}"
+      debug "Check if time for HEARTBEAT? #{( Time.monotonic - @heartbeat ) > Cannonry::Timing::HEARTBEAT}"
       ( Time.monotonic - @heartbeat ) > Cannonry::Timing::HEARTBEAT
     end
 
-    def send_heartbeat
+    private def send_heartbeat
       send(Cannonry::Worker::HEARTBEAT)
       debug "Sent HEARTBEAT to Battery"
     end
 
-    def reset_heartbeat
+    private def send_disconnect
+      send(Cannonry::Worker::DISCONNECT)
+      debug "Sent DISCONNECT to Battery"
+    end
+
+    private def reset_heartbeat
       @heartbeat = Time.monotonic
     end
 
-    def reset_retries
+    private def reset_retries
       @retries = Cannonry::RETRIES
     end
 
     def shutdown
       if @socket && !@socket.closed?
         debug "Shutting down sockets."
-        @poller.deregister_readable(@socket)
+        send_disconnect
         @socket.close
+        @poller.deregister_readable(@socket)
       end
     rescue ex
       exception(ex)

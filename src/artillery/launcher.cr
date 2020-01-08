@@ -4,43 +4,15 @@ require "../artillery/shot/error_404"
 require "radix"
 
 module Artillery
-  abstract class Launcher
+  abstract class Launcher < Armament
 
-    include Logger
     @context = uninitialized ZMQ::Context
     @socket = uninitialized ZMQ::Socket
-
     @retries = uninitialized Int32
-    @running = uninitialized Bool
 
     def start
       Armory.organize
-      connect
-      engage
-    end
-
-    def reset
-      shutdown
-      log "Reset 0MQ connection."
-      connect
-    end
-
-    def embattled
-      @running = true
-      word = "Engaging".colorize(:green).mode(:bold).to_s
-      log "#{word} // 0MQ: #{MOUNTPOINT_LOCATION}"
-      while(@running)
-        begin
-          debug "Going into embattled yield:"
-          yield
-          debug "Out of embattled yield."
-        rescue ex
-          exception(ex)
-          reset
-        end
-      end
-      log "Disengaging // 0MQ: #{MOUNTPOINT_LOCATION}"
-      shutdown
+      super
     end
 
     def chamber(message)

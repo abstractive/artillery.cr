@@ -4,13 +4,10 @@ require "../protocols/cannonry"
 #de Based on the example implementation of MDP:7 from ZMQ, by Tom van Leeuwen
 #de https://github.com/booksbyus/zguide/blob/master/examples/Ruby/mdbroker.rb
 
-#de TODO: Convert to avoid `extend self` once the Shots are loaded.
 
 module Artillery
-  class Battery
+  class Battery < Mountpoint
 
-    extend self
-    extend Mountpoint
     include Protocol
 
     def log(message)
