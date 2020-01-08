@@ -6,6 +6,7 @@ require "yaml"
 #de Individual applications in src/processes/ require their own specialized object requirements.
 
 require "./artillery/initialize"
+require "./artillery/exceptions"
 
 require "./artillery/overrides/*"
 require "./artillery/macros/*"

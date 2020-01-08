@@ -10,7 +10,9 @@ module Artillery
 
   #de Defaults:
   @@yaml = uninitialized YAML::Any
+  @@presence = uninitialized String
   @@public_directory = uninitialized String
+
   @@mountpoint_interface = uninitialized String
   @@mountpoint_port_zeromq = uninitialized String
   @@mountpoint_port_http = uninitialized String
@@ -56,6 +58,14 @@ module Artillery
     #de Allow keys to be set at the top level, or in environments.
     #de The environment value ought to override the top level if both are present.
 
+    if @@yaml["presence"]?
+      @@presence = @@yaml["presence"].to_s
+    end
+    
+    if @@yaml["interface"]?
+      @@mountpoint_interface = @@yaml["interface"].to_s
+    end
+
     if @@yaml["interface"]?
       @@mountpoint_interface = @@yaml["interface"].to_s
     end
@@ -92,7 +102,10 @@ module Artillery
     end
   end
 
+  #de TODO: Validate these values!
+
   #de Command-line Environment Variables:
+  PRESENCE = ENV["ARTILLERY_PRESENCE"] ||= @@presence ||= nil
   PUBLIC_DIRECTORY = ENV["ARTILLERY_PUBLIC"] ||= @@public_directory
 
   SOCKET_TIMEOUT = 1500
