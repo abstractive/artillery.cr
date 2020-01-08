@@ -3,6 +3,9 @@ module Artillery
     
     include Logger
 
+    @context = uninitialized ZMQ::Context
+    @socket = uninitialized ZMQ::Socket
+
     @running = uninitialized Bool
 
     def self.run
@@ -10,7 +13,6 @@ module Artillery
     end
 
     def start
-      Armory.organize
       connect
       engage
     end

@@ -6,8 +6,6 @@ require "radix"
 module Artillery
   abstract class Launcher < Armament
 
-    @context = uninitialized ZMQ::Context
-    @socket = uninitialized ZMQ::Socket
     @retries = uninitialized Int32
 
     def start
