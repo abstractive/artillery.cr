@@ -5,11 +5,9 @@ module Artillery
 
     def initialize
       @context = ZMQ::Context.new(MOUNTPOINT_THREADS)
-      debug "Initialized"
     end
 
     def connect
-      debug "Connecting"
       @socket = @context.socket(ZMQ::REQ)
       @socket.set_socket_option(ZMQ::LINGER, 0)
       @socket.set_socket_option(ZMQ::RCVTIMEO, SOCKET_TIMEOUT)
@@ -18,7 +16,6 @@ module Artillery
 
     def shutdown
       if @socket && !@socket.closed?
-        debug "Shutting down sockets."
         @socket.close
       end
     rescue

@@ -8,7 +8,7 @@ module Artillery
       Artillery::Shell::Request.as_json_from_context(env)
     end
 
-    def embattled(&block : HTTP::Server::Context -> JSON::Any)
+    def embattled(&block : HTTP::Server::Context -> JSON::Any | Hash(String, String | Int32))
       handler = block
       {% for method in HTTP_METHODS %}
         ::Kemal::RouteHandler::INSTANCE.add_route({{method.upcase}}, "/*") do |env|

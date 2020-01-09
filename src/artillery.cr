@@ -16,6 +16,7 @@ require "./artillery/logger"
 require "./artillery/shell/request"
 require "./artillery/shell/response"
 
+require "./artillery/protocols"
 require "./artillery/armament"
 require "./artillery/armory"
 

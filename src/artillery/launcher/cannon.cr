@@ -1,68 +1,50 @@
 require "../launcher"
-require "../protocols/cannonry"
-
-#de Based on the example implementation of MDP:7 from ZMQ, by Tom van Leeuwen
-#de https://github.com/booksbyus/zguide/blob/master/examples/Ruby/mdwrkapi.rb
 
 module Artillery
   class Cannon < Launcher
 
-    include Protocol
-
     @poller : ZMQ::Poller
-
-    @messages = uninitialized Array(String)
-
-    @handling : String?
 
     def initialize
       unless PRESENCE_CODE
-        raise Error::PresenceUndefined.new
+        raise Error::Presence::Undefined.new
       end
       @context = ZMQ::Context.new(LAUNCHER_THREADS)
       @poller = ZMQ::Poller.new
-      @poller.register_readable(@socket)
-      debug "Initialized"
     end
 
     def connect
-      debug "Connecting"
       @socket = @context.socket(ZMQ::DEALER)
       @socket.set_socket_option(ZMQ::LINGER, 0)
       @socket.connect(MOUNTPOINT_LOCATION)
+      @poller.register_readable(@socket)
       send_ready
-      reset_retries
+      #de reset_retries
       reset_heartbeat
+    end
+
+    def inbound
+      "==>".colorize(:light_gray)
     end
 
     def engage
       embattled do
-        debug "About to poll Battery for #{Cannonry::Timing::WAIT_LISTEN} milliseconds:"
-        if @poller.poll(Cannonry::Timing::WAIT_LISTEN) != 0
-          command = parse_messages
-          reset_retries
+        if @poller.poll(Cannonry::Timing::POLL) != 0
+          data = parse_messages!
+          command = data.shift
+          #de reset_retries
           case command
-          when Cannonry::Worker::REQUEST
-            #de TODO: Possibility of multiple messages per request.
-            #de       Right now just pull one:
-            responding!
-            discard_frame
-            handle(get_message)
-            finished!
-          when Cannonry::Worker::HEARTBEAT
+          when Cannonry::Command::REQUEST
+            mark(" >", "R".colorize(:light_cyan))
+            handle(data)
+          when Cannonry::Command::HEARTBEAT
             #de TODO: Have Cannons monitor Battery in future?
-            debug "Received HEARTBEAT from Battery"
-          when Cannonry::Worker::DISCONNECT
-            debug "Received DISCONNECT from Battery"
+            mark(" >", "H".colorize(:light_magenta))
+          when Cannonry::Command::DISCONNECT
+            mark(" >", "D".colorize(:light_red))
             reset
           else
             raise Error::Invalid::CommandReceived.new
-          end
-        else
-          if !retry?
-            debug "Retrying in #{Cannonry::Timing::WAIT_RETRY}"
-            sleep Cannonry::Timing::WAIT_RETRY
-            reset
           end
         end
         if next_heartbeat?
@@ -74,45 +56,31 @@ module Artillery
 
     def shutdown
       if @socket && !@socket.closed?
-        debug "Shutting down sockets."
         send_disconnect
         @socket.close
         @poller.deregister_readable(@socket)
       end
-    rescue ex
-      exception(ex)
-      #de raise(ex)
+    rescue
     end
 
-    private
-
-    def handle(message)
-      debug "Received request."
-      shell = chamber(@socket.receive_string)
-      send_reply(armed(shell))
-      debug "Responded to request."
+    private def handle(data)
+      mark(" >", "H".colorize(:blue))
+      handling = data.shift
+      shell = chamber(data.shift)
+      send_reply(armed(shell), handling)
     end
 
-    def discard_frame
-      get_message
-      return nil
-    end
 
-    def get_message
-      @messages.shift
-    end
-
-    def parse_messages
-      debug("Parsing messages.")
-      @messages = @socket.receive_strings
-      discard_frame
-      unless get_message == Cannonry::Worker::VERSION
+    private def parse_messages!
+      data = @socket.receive_strings
+      data.shift
+      unless data.shift == Cannonry::HEADER
         raise Error::Invalid::ProtocolVersion.new
       end
-      return get_message
+      return data
     end
 
-    def send(command : String?, option : String? = nil, message : String? | Array? = nil)
+    private def send(command : String?, option : String? = nil, message : String? | Array? = nil)
       if message.nil?
         message = [] of String
       elsif message.is_a?(String)
@@ -121,41 +89,30 @@ module Artillery
         raise Error::Invalid::MessageFormat.new
       end
       message = [option].concat(message) if option
-      message = ["", Cannonry::Worker::VERSION, command].concat(message)
+      message = ["", Cannonry::HEADER, command].concat(message)
       @socket.send_strings(message)
+      return message
     end
 
-    def finished!
-      @handling = nil
-      @messages = uninitialized Array(String)
+    private def send_reply(message : String, handling : String)
+      sent = send(Cannonry::Command::REPLY, PRESENCE_CODE, [handling, message])
+      mark(" <", "R".colorize(:cyan))
     end
 
-    def responding!
-      @handling = get_message
-      discard_frame
+    private def send_ready
+      sent = send(Cannonry::Command::READY, PRESENCE_CODE)
+      mark(" <", "R".colorize(:green))
     end
 
-    def send_reply(message)
-      send(Cannonry::Worker::REPLY, @handling, message)
+    private def send_heartbeat
+      sent = send(Cannonry::Command::HEARTBEAT)
+      mark(" <", "H".colorize(:magenta))
     end
 
-    def send_ready
-      send(Cannonry::Worker::READY, PRESENCE_CODE)
-      debug "Sent READY to Battery"
-    end
-
-    def send_heartbeat
-      send(Cannonry::Worker::HEARTBEAT)
-      debug "Sent HEARTBEAT to Battery"
-    end
-
-    def send_disconnect
-      send(Cannonry::Worker::DISCONNECT)
-      debug "Sent DISCONNECT to Battery"
-    end
-
-    def reset_retries
-      @retries = Cannonry::RETRIES
+    private def send_disconnect
+      sent = send(Cannonry::Command::DISCONNECT)
+      mark(" <", "D".colorize(:red))
+    rescue
     end
 
   end

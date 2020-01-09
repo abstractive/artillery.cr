@@ -1,6 +1,9 @@
 module Artillery
   module Error
-    class PresenceUndefined < Exception; end
+    module Presence
+      class Undefined < Exception; end
+      class Unavailable < Exception; end
+    end
     module Invalid
       class MessageFormat < Exception; end
       class ProtocolVersion < Exception; end

@@ -6,8 +6,6 @@ require "radix"
 module Artillery
   abstract class Launcher < Armament
 
-    @retries = uninitialized Int32
-
     def start
       Armory.organize
       super
@@ -48,11 +46,6 @@ module Artillery
         }
       end
       return respond.to_json
-    end
-
-    def retry?
-      @retries -= 1
-      return @retries != 0
     end
 
   end

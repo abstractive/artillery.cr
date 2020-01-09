@@ -13,7 +13,8 @@ module Artillery
 
   #de Defaults:
   @@yaml = uninitialized YAML::Any
-  @@presence_code = uninitialized String?
+  @@presence = uninitialized YAML::Any
+  @@presence_code = uninitialized YAML::Any?
   @@public_directory = uninitialized String
 
   @@mountpoint_interface = uninitialized String
@@ -49,11 +50,15 @@ module Artillery
     YAML.parse("")
   end
 
-  Logger.debug("Config? #{@@path_configuration}", "Artillery")
-
   if File.exists?(@@path_configuration)
     @@yaml = File.open(@@path_configuration) do |file|
       YAML.parse(file)
+    end
+
+    @@presence = if @@yaml["presence"]?
+      @@yaml["presence"]
+    else
+      YAML.parse("")
     end
 
     #de TODO: Implement outside Crystal...
@@ -107,7 +112,15 @@ module Artillery
 
   #de Command-line Environment Variables:
   PUBLIC_DIRECTORY = ENV["ARTILLERY_PUBLIC"] ||= @@public_directory
-  PRESENCE_CODE = PRESENCE["code"]?
+
+  PRESENCE = @@presence
+  @@presence_code = PRESENCE["code"]?
+  PRESENCE_CODE = if @@presence_code
+    Artillery::Logger.log("Presence: #{@@presence_code.to_s.colorize(:yellow)}", "Artillery")
+    @@presence_code.to_s
+  else
+    nil
+  end
 
   SOCKET_TIMEOUT = 1500
 

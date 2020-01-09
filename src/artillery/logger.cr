@@ -5,15 +5,19 @@ module Artillery
 
     extend self
 
+    def mark(*symbols)
+      printf("#{symbols.join}")
+    end
+
     def log(message, tag=self.class.name)
       arrow = ">".colorize(:dark_gray).mode(:bold).to_s
-      puts output = "#{timestamp} #{arrow} #{((tag) ? "#{tag.colorize(:light_yellow).to_s} #{arrow} " : "") + message}"
+      printf output = "\n#{timestamp} #{arrow} #{((tag) ? "#{tag.colorize(:light_yellow).to_s} #{arrow} " : "") + message} "
       output
     end
 
     def debug(message, tag=self.class.name, level : Int32? = nil)
       #de TODO: Implement levels.
-      word = "DEBUG".colorize(:cyan)
+      word = "D".colorize(:cyan)
       log "#{word}: #{message.colorize(:dark_gray).to_s}", tag
     end
 
