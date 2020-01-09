@@ -10,7 +10,6 @@ crystal: 0.32.1
 
 executables:
   - artillery
-  - bazooka
 
 license: MIT
 
@@ -25,9 +24,5 @@ dependencies:
     github: luislavena/radix
 
 targets:
-  artillery-mountpoint:
-    main: src/processes/artillery-mountpoint.cr
   artillery-battery:
     main: src/processes/artillery-battery.cr
-#de  artillery-launcher:
-#de    main: src/processes/artillery-launcher.cr
