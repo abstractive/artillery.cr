@@ -1,0 +1,7 @@
+name: artillery-benchmark
+version: 0.0.2
+
+dependencies:
+  await_async:
+    github: anykeyh/await_async
+    branch: master

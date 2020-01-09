@@ -8,9 +8,15 @@ module Artillery
   ENVIRONMENT = ENV["ARTILLERY_ENVIRONMENT"] ||= "development"
   CALLSITE = (ENV["ARTILLERY_CALLSITE"] ||= `pwd`).chomp
 
+  MOUNTPOINT_THREADS = 4
+  LAUNCHER_THREADS = 2
+
   #de Defaults:
   @@yaml = uninitialized YAML::Any
+  @@presence = uninitialized YAML::Any
+  @@presence_code = uninitialized YAML::Any?
   @@public_directory = uninitialized String
+
   @@mountpoint_interface = uninitialized String
   @@mountpoint_port_zeromq = uninitialized String
   @@mountpoint_port_http = uninitialized String
@@ -23,6 +29,7 @@ module Artillery
   FILE_SECRETS = ENV["ARTILLERY_SECRETS"] ||= "secrets.yml"
 
   @@public_directory = "./public"
+
   @@mountpoint_interface = "0.0.0.0"
   @@mountpoint_port_zeromq = "4000"
   @@mountpoint_port_http = "3000"
@@ -35,7 +42,7 @@ module Artillery
   @@secrets = uninitialized YAML::Any
 
   #de YAML if available:  if File.exists?(@@path_configuration)
-  SECRETS = if File.exists?(@@path_configuration)
+  SECRETS = if File.exists?(@@path_secrets)
     @@secrets = File.open(@@path_secrets) do |file|
       YAML.parse(file)
     end
@@ -48,12 +55,22 @@ module Artillery
       YAML.parse(file)
     end
 
+    @@presence = if @@yaml["presence"]?
+      @@yaml["presence"]
+    else
+      YAML.parse("")
+    end
+
     #de TODO: Implement outside Crystal...
     #de launchers: Set number of containers to use.
     #de public: Set public root directory to use.
 
     #de Allow keys to be set at the top level, or in environments.
     #de The environment value ought to override the top level if both are present.
+    
+    if @@yaml["interface"]?
+      @@mountpoint_interface = @@yaml["interface"].to_s
+    end
 
     if @@yaml["interface"]?
       @@mountpoint_interface = @@yaml["interface"].to_s
@@ -91,8 +108,21 @@ module Artillery
     end
   end
 
+  #de TODO: Validate these values!
+
   #de Command-line Environment Variables:
   PUBLIC_DIRECTORY = ENV["ARTILLERY_PUBLIC"] ||= @@public_directory
+
+  PRESENCE = @@presence
+  @@presence_code = PRESENCE["code"]?
+  PRESENCE_CODE = if @@presence_code
+    Artillery::Logger.log("Presence: #{@@presence_code.to_s.colorize(:yellow)}", "Artillery")
+    @@presence_code.to_s
+  else
+    nil
+  end
+
+  SOCKET_TIMEOUT = 1500
 
   MOUNTPOINT_INTERFACE = ENV["ARTILLERY_EXPOSED_INTERFACE"] ||= @@mountpoint_interface
   MOUNTPOINT_PORT_ZEROMQ = ENV["ARTILLERY_PORT_ZEROMQ"] ||= @@mountpoint_port_zeromq
