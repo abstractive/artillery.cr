@@ -70,7 +70,6 @@ module Artillery
       send_reply(armed(shell), handling)
     end
 
-
     private def parse_messages!
       data = @socket.receive_strings
       data.shift

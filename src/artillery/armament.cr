@@ -30,7 +30,7 @@ module Artillery
         begin
           yield
         rescue ex
-          exception(ex)
+          #de exception(ex)
           reset
         end
       end
@@ -39,7 +39,7 @@ module Artillery
     
     def reset
       shutdown
-      log "Reset connection.", "OMQ"
+      mark "( :", " RC ".colorize(:red), ": ) "
       connect
     end
 
