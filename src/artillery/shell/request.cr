@@ -31,9 +31,10 @@ module Artillery
       end
 
       def data
-        JSON.parse(@body).as_h
-      rescue
-        JSON.parse("").as_h
+        if !@body.empty?
+          return JSON.parse(@body).as_h
+        end
+        {} of String => JSON::Any
       end
 
       def self.from_json(payload)
@@ -45,8 +46,8 @@ module Artillery
           method: (env.request.method || "").to_s,
           path: (env.request.path || "").to_s,
           query: (env.request.query || "").to_s,
-          body: (( (b = env.request.body) && b.gets_to_end ) || IO::Memory.new).to_s,
-          format: (env.request.headers["Content-Type"] || "").to_s
+          body: (( (b = env.request.body) && b.gets_to_end ) || "").to_s,
+          format: (env.request.headers.get?("Content-Type") || "").to_s
         }.to_json
       end
 
