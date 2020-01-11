@@ -1,0 +1,9 @@
+name: artillery-benchmark
+version: 0.0.3
+
+dependencies:
+  await_async:
+    github: anykeyh/await_async
+    branch: master
+  crest:
+    github: mamantoha/crest

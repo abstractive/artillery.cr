@@ -1,19 +1,27 @@
-require "http/client"
+require "crest"
+require "await_async"
 
-total_requests = 10_000
+TOTAL_REQUESTS = 10_000
 
-puts "Starting test, with #{total_requests} requests."
-puts "Make sure a Mountpoint and Launcher are online..."
+puts "Starting test, with #{TOTAL_REQUESTS} requests."
 
 start = Time.local
-i = 0
 
-total_requests.times {  
-  break unless HTTP::Client.get("http://localhost:3000").status_code == 200
-  i += 1
-  Fiber.yield
+def benchmark
+  TOTAL_REQUESTS.times.map {
+      async! {
+        Crest.get(
+        "https://abstractive.zero/test",
+        tls: OpenSSL::SSL::Context::Client.insecure
+      )
+    }
+  }
+end
+
+await(5.seconds, benchmark).each {
+  printf "."
 }
 
 seconds = (Time.local - start).total_seconds
-puts "Messages per second: #{(i * 2) / seconds.to_f}"
+puts "Messages per second: #{TOTAL_REQUESTS / seconds}"
 puts "Total seconds: #{seconds}"

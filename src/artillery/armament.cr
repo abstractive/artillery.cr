@@ -19,7 +19,7 @@ module Artillery
       connect
       @running = true
       word = "Starting".colorize(:green).mode(:bold).to_s
-      log "#{word} // 0MQ: #{MOUNTPOINT_LOCATION}"
+      log "#{word} // 0MQ: #{MOUNTPOINT_LOCATION} // Threads: #{MOUNTPOINT_THREADS}m / #{LAUNCHER_THREADS}l"
       engage
       word = "Stopping".colorize(:red).mode(:bold).to_s
       log "#{word} // 0MQ: #{MOUNTPOINT_LOCATION}"
@@ -30,7 +30,7 @@ module Artillery
         begin
           yield
         rescue ex
-          #de exception(ex)
+          exception(ex)
           reset
         end
       end

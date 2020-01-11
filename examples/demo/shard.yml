@@ -1,9 +1,0 @@
-name: artillery-demo
-version: 0.0.0.9
-
-dependencies:
-  artillery:
-    github: abstractive/artillery.cr
-  await_async:
-    github: anykeyh/await_async
-    branch: master

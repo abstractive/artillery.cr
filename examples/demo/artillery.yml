@@ -1,8 +1,0 @@
-launchers: 3
-port:
-  http: 1370
-  zeromq: 13700
-environments:
-  development:
-    launchers: 3
-public: public/

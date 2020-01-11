@@ -30,4 +30,6 @@ module Artillery
     end
 
   end
+  extend Logger
+  include Logger
 end

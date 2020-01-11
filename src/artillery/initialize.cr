@@ -8,10 +8,8 @@ module Artillery
   ENVIRONMENT = ENV["ARTILLERY_ENVIRONMENT"] ||= "development"
   CALLSITE = (ENV["ARTILLERY_CALLSITE"] ||= `pwd`).chomp
 
-  MOUNTPOINT_THREADS = 4
-  LAUNCHER_THREADS = 2
-
   #de Defaults:
+  @@version = uninitialized String
   @@yaml = uninitialized YAML::Any
   @@presence = uninitialized YAML::Any
   @@presence_code = uninitialized YAML::Any?
@@ -25,11 +23,14 @@ module Artillery
     @@yaml
   end
 
-  FILE_CONFIGURATION = ENV["ARTILLERY_CONFIGURATION"] ||= "artillery.yml"
+  FILE_CONFIGURATION = (ENV["ARTILLERY_CONFIGURATION"]? && File.exists?(ENV["ARTILLERY_CONFIGURATION"])) ? ENV["ARTILLERY_CONFIGURATION"] : "artillery.yml"
   FILE_SECRETS = ENV["ARTILLERY_SECRETS"] ||= "secrets.yml"
 
+  @@disposition = "bazooka"
   @@public_directory = "./public"
 
+  @@launcher_threads = 2
+  @@mountpoint_threads = 4
   @@mountpoint_interface = "0.0.0.0"
   @@mountpoint_port_zeromq = "4000"
   @@mountpoint_port_http = "3000"
@@ -50,6 +51,17 @@ module Artillery
     YAML.parse("")
   end
 
+  if File.exists?("#{__FILE__}shard.yml".gsub("src/artillery/initialize.cr", ""))
+    @@version = File.open("#{__FILE__}shard.yml".gsub("src/artillery/initialize.cr", "")) do |file|
+      YAML.parse(file)["version"].as_s
+    end
+  else
+    abort("Artillery version unknown.")
+  end
+
+  VERSION = @@version
+  Artillery.log("Version: #{VERSION}", "Artillery")
+
   if File.exists?(@@path_configuration)
     @@yaml = File.open(@@path_configuration) do |file|
       YAML.parse(file)
@@ -61,46 +73,28 @@ module Artillery
       YAML.parse("")
     end
 
+    if @@yaml["disposition"]?
+      @@disposition = @@yaml["disposition"].as_s
+    end
+
     #de TODO: Implement outside Crystal...
     #de launchers: Set number of containers to use.
-    #de public: Set public root directory to use.
 
     #de Allow keys to be set at the top level, or in environments.
     #de The environment value ought to override the top level if both are present.
-    
-    if @@yaml["interface"]?
-      @@mountpoint_interface = @@yaml["interface"].to_s
-    end
-
-    if @@yaml["interface"]?
-      @@mountpoint_interface = @@yaml["interface"].to_s
-    end
-
-    if @@yaml["port"]?
-      if @@yaml["port"]["http"]?
-        @@mountpoint_port_http = @@yaml["port"]["http"].to_s
-      end
-    end
-
-    if @@yaml["port"]?
-      if @@yaml["port"]["zeromq"]?
-        @@mountpoint_port_zeromq = @@yaml["port"]["zeromq"].to_s
-      end
-    end
 
     if @@yaml[ENVIRONMENT]?
-      @@env = @@yaml[ENVIRONMENT]
-      if @@env["port"]?
-        if @@env["port"]["http"]?
-          @@mountpoint_port_http = @@env["port"]["http"].to_s
+      environment_configurations @@yaml[ENVIRONMENT]
+    elsif !@@yaml[ENVIRONMENT]? && @@yaml["environments"]?
+      @@yaml["environments"].as_h.each { |name,values|
+        if ( values["path_includes"]? && Process.executable_path.try &.includes?("#{values["path_includes"]}") ) ||
+           ( values["host"]? && System.try &.hostname == "#{values["host"]}" )
+          environment_configurations(values)
+          next
         end
-      end
-  
-      if @@env["port"]?
-        if @@env["port"]["zeromq"]?
-          @@mountpoint_port_zeromq = @@env["port"]["zeromq"].to_s
-        end
-      end
+      }
+    else
+      environment_configurations( @@yaml )
     end
 
     if @@yaml["public"]?
@@ -114,7 +108,12 @@ module Artillery
   PUBLIC_DIRECTORY = ENV["ARTILLERY_PUBLIC"] ||= @@public_directory
 
   PRESENCE = @@presence
-  @@presence_code = PRESENCE["code"]?
+  begin
+    @@presence_code = PRESENCE["code"]?
+  rescue
+    Artillery.log "No presence code set. [#{@@path_configuration}]", "Artillery"
+    abort
+  end
   PRESENCE_CODE = if @@presence_code
     Artillery::Logger.log("Presence: #{@@presence_code.to_s.colorize(:yellow)}", "Artillery")
     @@presence_code.to_s
@@ -122,8 +121,38 @@ module Artillery
     nil
   end
 
-  SOCKET_TIMEOUT = 1500
+  def self.environment_configurations(env)
+    if env["ports"]?
+      if env["ports"]["http"]?
+        @@mountpoint_port_http = "#{env["ports"]["http"]}"
+      end
+    end
 
+    if env["ports"]?
+      if env["ports"]["zeromq"]?
+        @@mountpoint_port_zeromq = "#{env["ports"]["zeromq"]}"
+      end
+    end
+
+    if env["interface"]?
+      @@mountpoint_interface = "#{env["interface"]}"
+    end
+
+    if env["threads"]? && env["threads"].as_h.any?
+      if env["threads"]["mountpoint"]?
+        @@mountpoint_threads = "#{env["threads"]["mountpoint"]}".to_i
+      end
+      if env["threads"]["launcher"]?
+        @@launcher_threads = "#{env["threads"]["launcher"]}".to_i
+      end
+    end
+  end
+
+  SOCKET_TIMEOUT = 1500
+  DISPOSITION = @@disposition
+
+  LAUNCHER_THREADS = (ENV["ARTILLERY_LAUNCHER_THREADS"]?) ? "#{ENV["ARTILLERY_LAUNCHER_THREADS"]}".to_i : @@launcher_threads
+  MOUNTPOINT_THREADS = (ENV["ARTILLERY_MOUNTPOINT_THREADS"]?) ? "#{ENV["ARTILLERY_MOUNTPOINT_THREADS"]}".to_i : @@mountpoint_threads
   MOUNTPOINT_INTERFACE = ENV["ARTILLERY_EXPOSED_INTERFACE"] ||= @@mountpoint_interface
   MOUNTPOINT_PORT_ZEROMQ = ENV["ARTILLERY_PORT_ZEROMQ"] ||= @@mountpoint_port_zeromq
   MOUNTPOINT_PORT_HTTP = ENV["ARTILLERY_PORT_HTTP"] ||= @@mountpoint_port_http

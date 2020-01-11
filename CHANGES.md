@@ -1,3 +1,11 @@
+# 202001111140-7Vn3 0.4.5
+* Cleaned out a lot of excess no longer needed in terms of files and outdated examples, as well as configurations moved elsewhere.
+* Fall-back to default configuration .yml if the operator points to a custom config that doesn't exist.
+* Add artillery/activate which detects the "disposition" of battery/bazooka/shoulder, etc.
+* Otherwise stellar can choose a disposition at artillery/activate/<disposition>.cr individually.
+* Include bin/artillery in the shard executables now that the artillery/activate behavior exists.
+* Removed script files, expecting to containerize and just by-pass the manual process management.
+
 # 202001090115-4Rn9 0.4.0
 * Overhaul to cover the Battery/Cannon(s) model, which also caused the revamp of `Mountpoint`, `Launcher`, and `Bazooka`.
 * Formally brought `Bazooka` ( and its Mountpount, `Shoulder` ) into a single process, easy to run with a few commands.
