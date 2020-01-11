@@ -1,4 +1,4 @@
-# 202001111140-7Vn3 0.4.5
+# 202001111140-7Vn3 0.4.6
 * Cleaned out a lot of excess no longer needed in terms of files and outdated examples, as well as configurations moved elsewhere.
 * Fall-back to default configuration .yml if the operator points to a custom config that doesn't exist.
 * Add artillery/activate which detects the "disposition" of battery/bazooka/shoulder, etc.
